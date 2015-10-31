@@ -1,5 +1,6 @@
-package love.sola.fyoung.timer;
+package love.sola.fyoung.task;
 
+import love.sola.fyoung.NoGuiLauncher;
 import love.sola.fyoung.auth.Active;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.util.NetUtil;
@@ -29,7 +30,7 @@ public class ActiveTask extends TimerTask {
 //			e.printStackTrace();
 			System.out.println("Active Failed");
 			if (!NetUtil.isInternet()) {
-				
+				NoGuiLauncher.input.add("relogin");
 			}
 		}
 	}

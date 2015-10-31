@@ -1,9 +1,11 @@
 package love.sola.fyoung.util;
 
 import love.sola.fyoung.config.Config;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +24,7 @@ public class NetUtil {
 			return Config.I.clientIP;
 		}
 		try {
-			return InetAddress.getLocalHost().getHostAddress();
+			return Config.I.clientIP = InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 		}
 		return null;
@@ -43,6 +45,28 @@ public class NetUtil {
 			}
 			return sb.substring(0, sb.length() - 1);
 		} catch (SocketException | UnknownHostException e) {
+			return getMac0();
+		}
+	}
+
+	private static String getMac0() {
+		try {
+			Enumeration<NetworkInterface> it = NetworkInterface.getNetworkInterfaces();
+			while (it.hasMoreElements()) {
+				NetworkInterface iface = it.nextElement();
+				if (!iface.getName().startsWith("eth")) continue;
+				byte[] b = iface.getHardwareAddress();
+				if (b == null) continue;
+				StringBuilder sb = new StringBuilder(18);
+				char[] str = ByteArrayUtil.bytesToHex(b).toCharArray();
+				for (int i = 0; i < str.length; i += 2) {
+					sb.append(str[i]);
+					sb.append(str[i + 1]);
+					sb.append('-');
+				}
+				return sb.substring(0, sb.length() - 1);
+			}
+		} catch (SocketException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -82,7 +106,10 @@ public class NetUtil {
 	}
 
 	public static void autoConfig() {
-		String portal = getPortal();
+		autoConfig(getPortal());
+	}
+
+	public static void autoConfig(String portal) {
 		if (portal == null) {
 			return;
 		}
@@ -96,6 +123,11 @@ public class NetUtil {
 			Config.I.nasIP = mat.group();
 			System.out.println("Fetched NAS IP: " + Config.I.nasIP);
 		}
+	}
+
+	@Test
+	public void test() {
+		System.out.println(getMac0());
 	}
 
 }

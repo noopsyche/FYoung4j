@@ -5,10 +5,13 @@ import love.sola.fyoung.auth.Login;
 import love.sola.fyoung.auth.Logout;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.config.ConfigLoader;
-import love.sola.fyoung.timer.ActiveTask;
+import love.sola.fyoung.task.ActiveTask;
+import love.sola.fyoung.task.InputTask;
+import love.sola.fyoung.util.NetUtil;
 
-import java.util.Scanner;
 import java.util.Timer;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * ***********************************************
@@ -18,43 +21,67 @@ import java.util.Timer;
  */
 public class NoGuiLauncher {
 
-	private static Timer timer = new Timer();
+	private static Timer timer;
+	private static Thread inputTask;
+	public static BlockingQueue<String> input = new LinkedBlockingQueue<>();
 
 	public static void main(String[] args) {
 		ConfigLoader.loadConfig(NoGuiLauncher.class.getClassLoader());
 		if (Config.I.useLog4j) {
 			love.sola.fyoung.log.LogManager.loadLog4j();
 		}
+
+		inputTask = new Thread(new InputTask());
+		inputTask.start();
+
 		root:
 		while (true) {
 			try {
-				System.out.println("Challenging token...");
-				String token = Challenge.post(Challenge.configure(Config.I.username));
-				System.out.println("Success challenged token: " + token);
-				System.out.println("Logging in...");
-				System.out.println(Login.post(Login.configure(Config.I.username, Config.I.password, token)));
+				if (NetUtil.isInternet()) {
+					System.out.println("Internet Detected");
+					logout();
+				}
+
+				login();
+
+				if (timer != null) {
+					timer.cancel();
+				}
+				timer = new Timer();
 				timer.schedule(new ActiveTask(), 60 * 1000, 60 * 1000);
+
 				System.out.println("*****Enter 'q' to logout*****");
-				Scanner cin = new Scanner(System.in);
 				String line;
-				while (cin.hasNextLine()) {
-					line = cin.nextLine();
+				while ((line = input.take()) != null) {
 					if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
-						System.out.println("Logging out...");
-						System.out.println(Logout.post(Logout.configure()));
+						logout();
 						break root;
 					}
-					if ("relogin".equalsIgnoreCase("line")) {
+					if ("relogin".equalsIgnoreCase(line)) {
 						System.out.println("Relogging in...");
 						continue root;
 					}
 				}
+
 				System.exit(0);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		System.exit(0);
+	}
+
+	public static void login() throws Exception {
+		System.out.println("Challenging token...");
+		String token = Challenge.post(Challenge.configure(Config.I.username));
+		System.out.println("Success challenged token: " + token);
+		System.out.println("Logging in...");
+		System.out.println(Login.post(Login.configure(Config.I.username, Config.I.password, token)));
+	}
+
+	public static void logout() throws Exception {
+		System.out.println("Logging out...");
+		System.out.println(Logout.post(Logout.configure()));
 	}
 
 }
