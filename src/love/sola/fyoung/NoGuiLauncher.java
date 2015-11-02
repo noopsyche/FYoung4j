@@ -42,6 +42,8 @@ public class NoGuiLauncher {
 					logout();
 				}
 
+				checkPortal();
+
 				login();
 
 				if (timer != null) {
@@ -82,6 +84,13 @@ public class NoGuiLauncher {
 	public static void logout() throws Exception {
 		System.out.println("Logging out...");
 		System.out.println(Logout.post(Logout.configure()));
+	}
+
+	public static void checkPortal() {
+		String portal = NetUtil.getPortal();
+		if (portal != null && Config.I.autoFetchIP) {
+			NetUtil.autoConfig(portal);
+		}
 	}
 
 }
