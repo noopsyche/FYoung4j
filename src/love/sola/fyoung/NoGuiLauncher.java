@@ -53,6 +53,7 @@ public class NoGuiLauncher {
 				timer.schedule(new ActiveTask(), 60 * 1000, 60 * 1000);
 
 				System.out.println("*****Enter 'q' to logout*****");
+
 				String line;
 				while ((line = input.take()) != null) {
 					if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
