@@ -9,9 +9,8 @@ import love.sola.fyoung.task.ActiveTask;
 import love.sola.fyoung.task.InputTask;
 import love.sola.fyoung.util.NetUtil;
 
+import java.util.Scanner;
 import java.util.Timer;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * ***********************************************
@@ -22,8 +21,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class NoGuiLauncher {
 
 	private static Timer timer;
-	private static Thread inputTask;
-	public static BlockingQueue<String> input = new LinkedBlockingQueue<>();
+	public static InputTask input;
 
 	public static void main(String[] args) {
 		ConfigLoader.loadConfig(NoGuiLauncher.class.getClassLoader());
@@ -31,8 +29,8 @@ public class NoGuiLauncher {
 			love.sola.fyoung.log.LogManager.loadLog4j();
 		}
 
-		inputTask = new Thread(new InputTask());
-		inputTask.start();
+		input = new InputTask();
+		input.start();
 
 		root:
 		while (true) {
@@ -54,8 +52,9 @@ public class NoGuiLauncher {
 
 				System.out.println("*****Enter 'q' to logout*****");
 
+				Scanner cin = new Scanner(System.in);
 				String line;
-				while ((line = input.take()) != null) {
+				while ((line = cin.nextLine()) != null) {
 					if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
 						logout();
 						break root;

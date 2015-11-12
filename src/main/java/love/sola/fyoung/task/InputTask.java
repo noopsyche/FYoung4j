@@ -1,11 +1,8 @@
 package love.sola.fyoung.task;
 
-import love.sola.fyoung.NoGuiLauncher;
+import love.sola.fyoung.log.DebugLogger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -14,12 +11,13 @@ import java.util.Scanner;
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class InputTask implements Runnable {
+public class InputTask extends Thread {
 
 	PipedInputStream pipeIn;
 	PipedOutputStream pipeOut;
 	InputStream sysIn;
-
+	PrintStream writer;
+	Scanner cin;
 
 	public InputTask() {
 		try {
@@ -27,14 +25,21 @@ public class InputTask implements Runnable {
 			pipeIn = new PipedInputStream();
 			pipeOut = new PipedOutputStream(pipeIn);
 			System.setIn(pipeIn);
-		} catch (IOException e) { }
+			cin = new Scanner(sysIn);
+			writer = new PrintStream(pipeOut);
+		} catch (IOException e) {
+			DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
+		}
 	}
 
 	@Override
 	public void run() {
-		Scanner cin = new Scanner(sysIn);
 		while (cin.hasNextLine()) {
-			NoGuiLauncher.input.add(cin.nextLine());
+			try {
+				writer.println(cin.nextLine());
+			} catch (Exception e) {
+				DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
+			}
 		}
 	}
 
