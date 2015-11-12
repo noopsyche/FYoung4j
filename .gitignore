@@ -8,4 +8,5 @@ out/
 .classpath
 .project
 /config.yml
+/dependency-reduced-pom.xml
 /logs
