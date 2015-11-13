@@ -1,9 +1,9 @@
 package love.sola.fyoung.task;
 
+import jline.console.ConsoleReader;
 import love.sola.fyoung.log.DebugLogger;
 
 import java.io.*;
-import java.util.Scanner;
 
 /**
  * ***********************************************
@@ -13,20 +13,22 @@ import java.util.Scanner;
  */
 public class InputTask extends Thread {
 
-	PipedInputStream pipeIn;
-	PipedOutputStream pipeOut;
-	InputStream sysIn;
-	PrintStream writer;
-	Scanner cin;
+	public PipedInputStream pipeIn;
+	public PipedOutputStream pipeOut;
+	public InputStream sysIn;
+	public OutputStream sysOut;
+	public PrintStream writer;
+	public ConsoleReader reader;
 
 	public InputTask() {
 		try {
 			sysIn = System.in;
+			sysOut = System.out;
 			pipeIn = new PipedInputStream();
 			pipeOut = new PipedOutputStream(pipeIn);
 			System.setIn(pipeIn);
-			cin = new Scanner(sysIn);
 			writer = new PrintStream(pipeOut);
+			reader = new ConsoleReader(System.in, sysOut);
 		} catch (IOException e) {
 			DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
 		}
@@ -34,13 +36,20 @@ public class InputTask extends Thread {
 
 	@Override
 	public void run() {
-		while (cin.hasNextLine()) {
-			try {
-				writer.println(cin.nextLine());
-			} catch (Exception e) {
-				DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
+		byte[] buf = new byte[1024];
+		int i;
+		try {
+			while ((i = sysIn.available()) != 0) {
+				i = sysIn.read(buf, 0, i);
+				pipeOut.write(buf, 0, i);
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	public String readLine() throws IOException {
+		return reader.readLine("> ");
 	}
 
 }

@@ -14,6 +14,7 @@ import java.util.Map;
  * Don't modify this source without my agreement
  * ***********************************************
  */
+@SuppressWarnings("Duplicates")
 public class Challenge {
 
 	public static final String URL = "http://enet.10000.gd.cn:10001/client/challenge";

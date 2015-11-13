@@ -1,7 +1,6 @@
 package love.sola.fyoung.util;
 
 import love.sola.fyoung.config.Config;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.net.*;
@@ -123,11 +122,6 @@ public class NetUtil {
 			Config.I.nasIP = mat.group();
 			System.out.println("Fetched NAS IP: " + Config.I.nasIP);
 		}
-	}
-
-	@Test
-	public void test() {
-		System.out.println(getMac0());
 	}
 
 }

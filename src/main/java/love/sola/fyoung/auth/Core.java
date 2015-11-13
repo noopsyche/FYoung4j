@@ -1,7 +1,6 @@
 package love.sola.fyoung.auth;
 
 import com.google.gson.Gson;
-import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -86,36 +85,6 @@ public class Core {
 			}
 		}
 		return url.substring(0, url.length() - 1);
-	}
-
-
-	@Test
-	public void testLogin() {
-		try {
-			String token;
-			System.out.println(token = Challenge.post(Challenge.configure("*")));
-			System.out.println(Login.post(Login.configure("*", "*", token)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testActive() {
-		try {
-			System.out.println(Active.post(Active.configure("*")));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testLogout() {
-		try {
-			System.out.println(Logout.post(Logout.configure()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

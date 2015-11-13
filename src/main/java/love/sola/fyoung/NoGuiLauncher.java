@@ -5,11 +5,12 @@ import love.sola.fyoung.auth.Login;
 import love.sola.fyoung.auth.Logout;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.config.ConfigLoader;
+import love.sola.fyoung.log.DebugLogger;
 import love.sola.fyoung.task.ActiveTask;
 import love.sola.fyoung.task.InputTask;
 import love.sola.fyoung.util.NetUtil;
 
-import java.util.Scanner;
+import java.io.IOException;
 import java.util.Timer;
 
 /**
@@ -25,12 +26,11 @@ public class NoGuiLauncher {
 
 	public static void main(String[] args) {
 		ConfigLoader.loadConfig(NoGuiLauncher.class.getClassLoader());
+		input = new InputTask();
+		input.start();
 		if (Config.I.useLog4j) {
 			love.sola.fyoung.log.LogManager.loadLog4j();
 		}
-
-		input = new InputTask();
-		input.start();
 
 		root:
 		while (true) {
@@ -52,19 +52,22 @@ public class NoGuiLauncher {
 
 				System.out.println("*****Enter 'q' to logout*****");
 
-				Scanner cin = new Scanner(System.in);
-				String line;
-				while ((line = cin.nextLine()) != null) {
-					if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
-						logout();
-						break root;
+				try {
+					String line;
+					while ((line = input.readLine()) != null) {
+						if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
+							logout();
+							break root;
+						}
+						if ("relogin".equalsIgnoreCase(line)) {
+							System.out.println("Relogging in...");
+							continue root;
+						}
+						System.out.println("Unknown command. (Simple command implementation, not finished yet.)");
 					}
-					if ("relogin".equalsIgnoreCase(line)) {
-						System.out.println("Relogging in...");
-						continue root;
-					}
+				} catch (IOException e) {
+					DebugLogger.logTrace("Error occurred while reading command via jline.", e);
 				}
-
 				System.exit(0);
 			} catch (Exception e) {
 				e.printStackTrace();

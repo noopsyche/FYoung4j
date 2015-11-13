@@ -14,6 +14,7 @@ import java.util.Map;
  * Don't modify this source without my agreement
  * ***********************************************
  */
+@SuppressWarnings("Duplicates")
 public class Active {
 
 	public static final String URL = "http://enet.10000.gd.cn:8001/hbservice/client/active";
