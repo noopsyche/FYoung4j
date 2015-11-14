@@ -43,7 +43,7 @@ public class NetUtil {
 				sb.append('-');
 			}
 			return sb.substring(0, sb.length() - 1);
-		} catch (SocketException | UnknownHostException e) {
+		} catch (NullPointerException | SocketException | UnknownHostException e) {
 			return getMac0();
 		}
 	}

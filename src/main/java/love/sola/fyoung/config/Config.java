@@ -11,6 +11,8 @@ import lombok.ToString;
 @ToString(exclude = "password")
 public class Config {
 
+	public static final String IP_REGEX = "^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$";
+
 	public static Config I;
 
 	public String username;
@@ -23,6 +25,7 @@ public class Config {
 	public String mac;
 	public boolean debugMode;
 	public boolean useLog4j;
+	public boolean useJline;
 
 	public Config() {
 		I = this;

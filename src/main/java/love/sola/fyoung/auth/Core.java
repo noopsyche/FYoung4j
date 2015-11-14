@@ -1,6 +1,7 @@
 package love.sola.fyoung.auth;
 
 import com.google.gson.Gson;
+import love.sola.fyoung.log.DebugLogger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,6 +36,7 @@ public class Core {
 	public static String postJson(String target, Map<String, String> conf) throws Exception {
 		URL url = new URL(target);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(500);
 		conn.setReadTimeout(500);
 		conn.addRequestProperty("User-Agent", "Mozilla");
 		conn.addRequestProperty("Content-Type", "application/json");
@@ -48,6 +50,7 @@ public class Core {
 		while ((inputLine = in.readLine()) != null) {
 			html.append(inputLine);
 		}
+		in.close();
 		return html.toString();
 	}
 
@@ -57,6 +60,7 @@ public class Core {
 				return postJson(target, conf);
 			} catch (Exception e) {
 				System.out.println("Failed. Retry: " + retry);
+				DebugLogger.logTrace("Failed Trace: ", e);
 			}
 		}
 		return null;
@@ -65,6 +69,7 @@ public class Core {
 	public static String get(String target, Map<String, String> conf) throws Exception {
 		URL url = new URL(formatURLParam(target, conf));
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
 		conn.setReadTimeout(5000);
 		conn.setRequestMethod("GET");
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));

@@ -35,10 +35,7 @@ public class NoGuiLauncher {
 		root:
 		while (true) {
 			try {
-				if (NetUtil.isInternet()) {
-					System.out.println("Internet Detected");
-					logout();
-				}
+				checkInternet();
 
 				checkPortal();
 
@@ -95,5 +92,39 @@ public class NoGuiLauncher {
 			NetUtil.autoConfig(portal);
 		}
 	}
+
+	public static void checkInternet() throws Exception {
+		boolean tryLogout = true;
+		while (NetUtil.isInternet()) {
+			System.out.println("Internet Detected");
+			if (Config.I.clientIP != null && tryLogout) {
+				System.out.println("Trying to logout..");
+				logout();
+				tryLogout = false;
+				continue;
+			}
+			System.out.println("Logout failed");
+			String line;
+			while (true) {
+				System.out.println("Type your current LAN IP Address to logout (or 'q' to quit):");
+				line = input.readLine();
+				if (line == null) continue;
+				if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
+					System.exit(0);
+					return;
+				}
+				if (!line.matches(Config.IP_REGEX)) {
+					System.out.println("Invalid LAN IP Address");
+					continue;
+				}
+				Config.I.clientIP = line;
+				System.out.println("Client IP has been set to: " + Config.I.clientIP);
+				break;
+			}
+			tryLogout = true;
+		}
+	}
+
+
 
 }
