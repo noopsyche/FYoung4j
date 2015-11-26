@@ -48,17 +48,19 @@ public class InputTask extends Thread {
 		if (Config.I.useJline) {
 			byte[] buf = new byte[1024];
 			int i;
-			try {
-				while ((i = sysIn.available()) != 0) {
+			while (true) {
+				try {
+					if ((i = sysIn.available()) == 0) break;
 					i = sysIn.read(buf, 0, i);
 					pipeOut.write(buf, 0, i);
+				} catch (IOException e) {
+					DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		} else {
-			while (pipe_reader.hasNextLine()) {
+			while (true) {
 				try {
+					if (!pipe_reader.hasNextLine()) break;
 					writer.println(pipe_reader.nextLine());
 				} catch (Exception e) {
 					DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
