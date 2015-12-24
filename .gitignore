@@ -1,6 +1,7 @@
 /target
 .idea/
 out/
+/test
 /.metadata/
 *.iml
 ~*
