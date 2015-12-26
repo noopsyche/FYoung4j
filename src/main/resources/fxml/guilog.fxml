@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="love.sola.fyoung.gui.controller.LogViewController">
+   <center>
+      <TextArea fx:id="guiConsole" editable="false" prefHeight="360.0" prefWidth="600.0" style="-fx-background-color: black; -fx-text-fill: #00FF00; -fx-highlight-fill: #00FF00; -fx-highlight-text-fill: black; -fx-control-inner-background: black;" text="Your's black technology." wrapText="true" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </TextArea>
+   </center>
+   <top>
+      <HBox prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
+         <children>
+            <Pane>
+               <children>
+                  <Label fx:id="tipLabel" layoutX="5.0" layoutY="7.0" text="Notification: View is initializing..." />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+         </children></HBox>
+   </top>
+   <bottom>
+      <ToolBar nodeOrientation="LEFT_TO_RIGHT">
+         <items>
+            <Button fx:id="editCfgBtn" mnemonicParsing="false" text="Edit Configuration" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button fx:id="clearBtn" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onClear" text="Clear" />
+          <Button fx:id="closeBtn" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onMouseClicked="#onClose" text="Close" />
+         </items>
+      </ToolBar>
+   </bottom>
+</BorderPane>

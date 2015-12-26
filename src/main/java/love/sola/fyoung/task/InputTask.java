@@ -2,6 +2,7 @@ package love.sola.fyoung.task;
 
 import jline.console.ConsoleReader;
 import love.sola.fyoung.config.Config;
+import love.sola.fyoung.gui.SystemTrayLauncher;
 import love.sola.fyoung.log.DebugLogger;
 
 import java.io.*;
@@ -32,7 +33,7 @@ public class InputTask extends Thread {
 			pipeOut = new PipedOutputStream(pipeIn);
 			System.setIn(pipeIn);
 			writer = new PrintStream(pipeOut);
-			if (Config.I.useJline) {
+			if (Config.I.useJline && !SystemTrayLauncher.GUI_MODE) {
 				reader = new ConsoleReader(System.in, sysOut);
 			} else {
 				pipe_reader = new Scanner(sysIn);

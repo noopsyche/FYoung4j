@@ -24,13 +24,17 @@ public class NoGuiLauncher {
 	private static Timer timer;
 	public static InputTask input;
 
-	public static void main(String[] args) {
+	public static void init() {
 		ConfigLoader.loadConfig(NoGuiLauncher.class.getClassLoader());
 		input = new InputTask();
 		input.start();
 		if (Config.I.useLog4j) {
 			love.sola.fyoung.log.LogManager.loadLog4j();
 		}
+	}
+
+	public static void main(String[] args) {
+		init();
 
 		root:
 		while (true) {
