@@ -25,7 +25,9 @@ public class Config {
 	public String mac;
 	public boolean debugMode;
 	public boolean useLog4j;
-	public boolean useJline;
+	public boolean useJLine;
+	public boolean useSpecifiedDNS;
+	public String specifiedDNS;
 
 	public Config() {
 		I = this;

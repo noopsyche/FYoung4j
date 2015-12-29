@@ -33,7 +33,7 @@ public class InputTask extends Thread {
 			pipeOut = new PipedOutputStream(pipeIn);
 			System.setIn(pipeIn);
 			writer = new PrintStream(pipeOut);
-			if (Config.I.useJline && !SystemTrayLauncher.GUI_MODE) {
+			if (Config.I.useJLine && !SystemTrayLauncher.GUI_MODE) {
 				reader = new ConsoleReader(System.in, sysOut);
 			} else {
 				pipe_reader = new Scanner(sysIn);
@@ -46,7 +46,7 @@ public class InputTask extends Thread {
 
 	@Override
 	public void run() {
-		if (Config.I.useJline) {
+		if (Config.I.useJLine) {
 			byte[] buf = new byte[1024];
 			int i;
 			while (true) {
@@ -71,7 +71,7 @@ public class InputTask extends Thread {
 	}
 
 	public String readLine() throws IOException {
-		if (Config.I.useJline) {
+		if (Config.I.useJLine) {
 			return reader.readLine("> ");
 		} else {
 			return c_reader.readLine();

@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 /**
  * ***********************************************
@@ -43,12 +42,6 @@ public class SystemTrayLauncher extends Application {
 			System.setOut(new PrintStream(pout));
 			Platform.runLater(() -> LogViewController.INSTANCE.guiConsole.setText("GUI Consoled Initialized.\n"));
 			new GuiConsoleTask(pin).start();
-			new Thread(() -> {
-				Scanner cin = new Scanner(System.in);
-				while (cin.hasNext()) {
-					System.out.println(cin.nextLine());
-				}
-			}).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

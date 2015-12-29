@@ -124,4 +124,11 @@ public class NetUtil {
 		}
 	}
 
+	public static void resetDNS() {
+		if (Config.I.useSpecifiedDNS) {
+			System.setProperty("sun.net.spi.nameservice.nameservers", Config.I.specifiedDNS);
+			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
+		}
+	}
+
 }
