@@ -21,11 +21,13 @@ public class InputTask extends Thread {
 	public InputStream sysIn;
 	public OutputStream sysOut;
 	public PrintStream writer;
-	public ConsoleReader reader;
-	public Scanner pipe_reader;
-	public BufferedReader c_reader;
+	public ConsoleReader jLineReader;
+	public Scanner sysInReader;
+	public BufferedReader pipeInReader;
+	public boolean useJLine;
 
 	public InputTask() {
+		useJLine = Config.I.useJLine && !SystemTrayLauncher.GUI_MODE;
 		try {
 			sysIn = System.in;
 			sysOut = System.out;
@@ -33,11 +35,11 @@ public class InputTask extends Thread {
 			pipeOut = new PipedOutputStream(pipeIn);
 			System.setIn(pipeIn);
 			writer = new PrintStream(pipeOut);
-			if (Config.I.useJLine && !SystemTrayLauncher.GUI_MODE) {
-				reader = new ConsoleReader(System.in, sysOut);
+			if (useJLine) {
+				jLineReader = new ConsoleReader(System.in, sysOut);
 			} else {
-				pipe_reader = new Scanner(sysIn);
-				c_reader = new BufferedReader(new InputStreamReader(System.in));
+				sysInReader = new Scanner(sysIn);
+				pipeInReader = new BufferedReader(new InputStreamReader(pipeIn));
 			}
 		} catch (IOException e) {
 			DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
@@ -46,7 +48,7 @@ public class InputTask extends Thread {
 
 	@Override
 	public void run() {
-		if (Config.I.useJLine) {
+		if (useJLine) {
 			byte[] buf = new byte[1024];
 			int i;
 			while (true) {
@@ -61,8 +63,8 @@ public class InputTask extends Thread {
 		} else {
 			while (true) {
 				try {
-					if (!pipe_reader.hasNextLine()) break;
-					writer.println(pipe_reader.nextLine());
+					if (!sysInReader.hasNextLine()) break;
+					writer.println(sysInReader.nextLine());
 				} catch (Exception e) {
 					DebugLogger.logTrace("Error occurred while warping System.in to pipe.", e);
 				}
@@ -71,10 +73,10 @@ public class InputTask extends Thread {
 	}
 
 	public String readLine() throws IOException {
-		if (Config.I.useJLine) {
-			return reader.readLine("> ");
+		if (useJLine) {
+			return jLineReader.readLine("> ");
 		} else {
-			return c_reader.readLine();
+			return pipeInReader.readLine();
 		}
 	}
 

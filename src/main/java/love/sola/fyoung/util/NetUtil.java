@@ -104,11 +104,11 @@ public class NetUtil {
 		return null;
 	}
 
-	public static void autoConfig() {
-		autoConfig(getPortal());
+	public static void autoFetchIP() {
+		autoFetchIP(getPortal());
 	}
 
-	public static void autoConfig(String portal) {
+	public static void autoFetchIP(String portal) {
 		if (portal == null) {
 			return;
 		}
@@ -125,7 +125,7 @@ public class NetUtil {
 	}
 
 	public static void resetDNS() {
-		if (Config.I.useSpecifiedDNS) {
+		if (Config.I.specifiedDNS != null) {
 			System.setProperty("sun.net.spi.nameservice.nameservers", Config.I.specifiedDNS);
 			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
 		}

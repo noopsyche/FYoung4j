@@ -45,12 +45,7 @@ public class LogViewController {
 
 	@FXML
 	public void onClose(MouseEvent evt) {
-		if (((Button) evt.getSource()).getId().startsWith("clear")) {
-			tipLabel.setText("Cleared");
-			guiConsole.setText("");
-		} else {
-			SystemTrayLauncher.primaryStage.close();
-		}
+		SystemTrayLauncher.primaryStage.close();
 	}
 
 }

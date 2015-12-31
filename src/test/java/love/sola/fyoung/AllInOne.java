@@ -1,5 +1,6 @@
 package love.sola.fyoung;
 
+import love.sola.fyoung.config.Config;
 import org.junit.Test;
 
 /**
@@ -8,10 +9,11 @@ import org.junit.Test;
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class NSTest {
+public class AllInOne {
 
 	@Test
-	public void test() {
+	public void testYaml() {
+		System.out.println(Config.I);
 	}
 
 }

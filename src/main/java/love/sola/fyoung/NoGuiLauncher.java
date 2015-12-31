@@ -4,7 +4,6 @@ import love.sola.fyoung.auth.Challenge;
 import love.sola.fyoung.auth.Login;
 import love.sola.fyoung.auth.Logout;
 import love.sola.fyoung.config.Config;
-import love.sola.fyoung.config.ConfigLoader;
 import love.sola.fyoung.log.DebugLogger;
 import love.sola.fyoung.task.ActiveTask;
 import love.sola.fyoung.task.InputTask;
@@ -25,12 +24,8 @@ public class NoGuiLauncher {
 	public static InputTask input;
 
 	public static void init() {
-		ConfigLoader.loadConfig(NoGuiLauncher.class.getClassLoader());
 		input = new InputTask();
 		input.start();
-		if (Config.I.useLog4j) {
-			love.sola.fyoung.log.LogManager.loadLog4j();
-		}
 	}
 
 	public static void main(String[] args) {
@@ -93,7 +88,7 @@ public class NoGuiLauncher {
 	public static void checkPortal() {
 		String portal = NetUtil.getPortal();
 		if (portal != null && Config.I.autoFetchIP) {
-			NetUtil.autoConfig(portal);
+			NetUtil.autoFetchIP(portal);
 		}
 	}
 

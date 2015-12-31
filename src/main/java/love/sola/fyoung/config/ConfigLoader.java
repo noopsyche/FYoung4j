@@ -1,6 +1,5 @@
 package love.sola.fyoung.config;
 
-import love.sola.fyoung.util.NetUtil;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -25,19 +24,10 @@ public class ConfigLoader {
 			FileInputStream fin = new FileInputStream(CONFIG_FILE);
 			Config cfg = yml.loadAs(fin, Config.class);
 			fin.close();
-			if (Config.I.autoFetchIP) {
-				NetUtil.autoConfig();
-			}
-			if (Config.I.mac == null) {
-				Config.I.mac = NetUtil.getMAC();
-			}
-			System.out.println("Successful loaded config.");
-			System.out.println("Config = " + cfg);
 			return cfg;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Configuration load failed.");
 		return null;
 	}
 

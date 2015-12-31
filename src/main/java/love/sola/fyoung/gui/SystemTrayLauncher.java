@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * ***********************************************
@@ -33,6 +34,7 @@ public class SystemTrayLauncher extends Application {
 		primaryStage.show();
 		initGuiConsole();
 		NoGuiLauncher.init();
+		debugInput();
 	}
 
 	private void initGuiConsole() {
@@ -47,9 +49,24 @@ public class SystemTrayLauncher extends Application {
 		}
 	}
 
+	private void debugInput() {
+		new Thread(() -> {
+			Scanner cin = new Scanner(System.in);
+			while (cin.hasNext()) {
+				String l = cin.nextLine();
+				if (l.equals("Open")) {
+					Platform.runLater(() -> primaryStage.show());
+					continue;
+				}
+				System.out.println(l);
+			}
+		}).start();
+	}
+
 	public static void main(String[] args) {
 		GUI_MODE = true;
 		launch(args);
+		Platform.setImplicitExit(false);
 	}
 
 }

@@ -16,6 +16,8 @@ import java.util.TimerTask;
  */
 public class ActiveTask extends TimerTask {
 
+	public static ActiveTask INSTANCE = new ActiveTask();
+
 	public ActiveTask() {
 		System.out.println("ActiveTask initialized");
 	}
@@ -37,5 +39,7 @@ public class ActiveTask extends TimerTask {
 			}
 		}
 	}
+
+
 
 }
