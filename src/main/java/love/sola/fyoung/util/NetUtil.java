@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class NetUtil {
 
-	public static final String IP_PATTERN = "[1-9][0-9]{1,2}\\.([0-9]{1,3}\\.){2}[1-9][0-9]{1,2}";
+	public static final String IP_PATTERN = "[1-9][0-9]{1,2}\\.([0-9]{1,3}\\.){2}[1-9][0-9]{0,2}";
 
 	public static String getLocalIP() {
 		if (Config.I.clientIP != null) {
