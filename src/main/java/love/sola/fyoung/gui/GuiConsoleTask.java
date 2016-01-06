@@ -1,9 +1,8 @@
 package love.sola.fyoung.gui;
 
 import javafx.application.Platform;
-import love.sola.fyoung.gui.controller.LogViewController;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -26,9 +25,21 @@ public class GuiConsoleTask extends Thread {
 		while (cin.hasNext()) {
 			String line = cin.nextLine();
 			Platform.runLater(() -> {
-				LogViewController.INSTANCE.guiConsole.appendText(line);
-				LogViewController.INSTANCE.guiConsole.appendText("\n");
+				SystemTrayLauncher.controller.guiConsole.appendText(line);
+				SystemTrayLauncher.controller.guiConsole.appendText("\n");
 			});
+		}
+	}
+
+	public static void initGuiConsole() {
+		try {
+			PipedOutputStream pout = new PipedOutputStream();
+			PipedInputStream pin = new PipedInputStream(pout);
+			System.setOut(new PrintStream(pout));
+			Platform.runLater(() -> SystemTrayLauncher.controller.guiConsole.setText("GUI Consoled Initialized.\n"));
+			new GuiConsoleTask(pin).start();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -1,11 +1,16 @@
 package love.sola.fyoung.gui.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import love.sola.fyoung.gui.SystemTrayLauncher;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * ***********************************************
@@ -13,14 +18,20 @@ import love.sola.fyoung.gui.SystemTrayLauncher;
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class LogViewController {
+public class LogViewController implements Initializable {
 
-	public static LogViewController INSTANCE;
+	private ResourceBundle bundle;
 
-
-	public LogViewController() {
-		INSTANCE = this;
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println("location = " + location);
+		System.out.println("resources = " + resources);
+		bundle = resources;
+		SystemTrayLauncher.controller = this;
 	}
+
+	@FXML
+	public BorderPane root;
 
 	@FXML
 	public Label tipLabel;
@@ -39,13 +50,28 @@ public class LogViewController {
 
 	@FXML
 	public void onClear(MouseEvent evt) {
-		tipLabel.setText("Cleared");
+		tipLabel.setText(bundle.getString("Cleared"));
 		guiConsole.setText("");
 	}
 
 	@FXML
 	public void onClose(MouseEvent evt) {
 		SystemTrayLauncher.primaryStage.close();
+	}
+
+	private double xOffset = 0;
+	private double yOffset = 0;
+
+	@FXML
+	public void onLayoutPressed(MouseEvent evt) {
+		xOffset = evt.getSceneX();
+		yOffset = evt.getSceneY();
+	}
+
+	@FXML
+	public void onLayoutDrag(MouseEvent evt) {
+		root.getScene().getWindow().setX(evt.getScreenX() - xOffset);
+		root.getScene().getWindow().setY(evt.getScreenY() - yOffset);
 	}
 
 }

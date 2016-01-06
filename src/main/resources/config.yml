@@ -8,4 +8,4 @@ autoFetchIP: true
 #mac:
 debugMode: false
 useLog4j: true
-useJline: true
+useJLine: true

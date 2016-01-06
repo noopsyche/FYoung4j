@@ -5,14 +5,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import love.sola.fyoung.NoGuiLauncher;
 import love.sola.fyoung.gui.controller.LogViewController;
 
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
@@ -25,28 +25,26 @@ public class SystemTrayLauncher extends Application {
 
 	public static boolean GUI_MODE = false;
 	public static Stage primaryStage = null;
+	public static LogViewController controller = null;
+	public static ResourceBundle bundle = null;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		SystemTrayLauncher.primaryStage = primaryStage;
-		Parent root = FXMLLoader.load(getClass().getResource("/fxml/guilog.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/assets/fxml/guilog.fxml"), bundle);
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.setScene(new Scene(root));
+		primaryStage.getScene().setFill(Color.TRANSPARENT);
+		primaryStage.getIcons().addAll(
+				new Image(getClass().getResourceAsStream("/assets/icon/icon_16x16.png")),
+				new Image(getClass().getResourceAsStream("/assets/icon/icon_24x24.png")),
+				new Image(getClass().getResourceAsStream("/assets/icon/icon_32x32.png")),
+				new Image(getClass().getResourceAsStream("/assets/icon/icon_48x48.png"))
+		);
 		primaryStage.show();
-		initGuiConsole();
+		GuiConsoleTask.initGuiConsole();
 		NoGuiLauncher.init();
 		debugInput();
-	}
-
-	private void initGuiConsole() {
-		try {
-			PipedOutputStream pout = new PipedOutputStream();
-			PipedInputStream pin = new PipedInputStream(pout);
-			System.setOut(new PrintStream(pout));
-			Platform.runLater(() -> LogViewController.INSTANCE.guiConsole.setText("GUI Consoled Initialized.\n"));
-			new GuiConsoleTask(pin).start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void debugInput() {
@@ -63,8 +61,10 @@ public class SystemTrayLauncher extends Application {
 		}).start();
 	}
 
+
 	public static void main(String[] args) {
 		GUI_MODE = true;
+		bundle = ResourceBundle.getBundle("assets.lang.lang");
 		launch(args);
 		Platform.setImplicitExit(false);
 	}
