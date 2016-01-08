@@ -36,7 +36,7 @@ public class GuiConsoleTask extends Thread {
 			PipedOutputStream pout = new PipedOutputStream();
 			PipedInputStream pin = new PipedInputStream(pout);
 			System.setOut(new PrintStream(pout));
-			Platform.runLater(() -> SystemTrayLauncher.controller.guiConsole.setText("GUI Consoled Initialized.\n"));
+			Platform.runLater(() -> SystemTrayLauncher.controller.tipLabel.setText("GUI Consoled Initialized.\n"));
 			new GuiConsoleTask(pin).start();
 		} catch (IOException e) {
 			e.printStackTrace();
