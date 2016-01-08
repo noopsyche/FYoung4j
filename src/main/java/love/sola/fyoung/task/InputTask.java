@@ -27,7 +27,6 @@ public class InputTask extends Thread {
 	public boolean useJLine;
 
 	public InputTask() {
-		useJLine = Config.I.useJLine && !SystemTrayLauncher.GUI_MODE;
 		try {
 			sysIn = System.in;
 			sysOut = System.out;
@@ -35,6 +34,7 @@ public class InputTask extends Thread {
 			pipeOut = new PipedOutputStream(pipeIn);
 			System.setIn(pipeIn);
 			writer = new PrintStream(pipeOut);
+			useJLine = Config.I.useJLine && !SystemTrayLauncher.GUI_MODE;
 			if (useJLine) {
 				jLineReader = new ConsoleReader(System.in, sysOut);
 			} else {

@@ -30,7 +30,6 @@ public class NoGuiLauncher {
 
 	public static void main(String[] args) {
 		init();
-
 		root:
 		while (true) {
 			try {

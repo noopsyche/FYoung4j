@@ -44,6 +44,9 @@ public class Config {
 		if (I == null) {
 			System.out.println("Configuration load failed.");
 		}
+		if (I.useSpecifiedDNS) {
+			NetUtil.resetDNS();
+		}
 		if (I.useLog4j) {
 			LogManager.loadLog4j();
 		}
