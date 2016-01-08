@@ -9,3 +9,5 @@ autoFetchIP: true
 debugMode: false
 useLog4j: true
 useJLine: true
+useSpecifiedDNS: true
+specifiedDNS: '202.96.128.166,202.96.134.133'

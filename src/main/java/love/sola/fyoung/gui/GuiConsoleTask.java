@@ -5,6 +5,8 @@ import javafx.application.Platform;
 import java.io.*;
 import java.util.Scanner;
 
+import static love.sola.fyoung.gui.i18n.Lang.lang;
+
 /**
  * ***********************************************
  * Created by Sola on 2015/12/25.
@@ -36,7 +38,7 @@ public class GuiConsoleTask extends Thread {
 			PipedOutputStream pout = new PipedOutputStream();
 			PipedInputStream pin = new PipedInputStream(pout);
 			System.setOut(new PrintStream(pout));
-			Platform.runLater(() -> SystemTrayLauncher.controller.tipLabel.setText("GUI Consoled Initialized.\n"));
+			Platform.runLater(() -> SystemTrayLauncher.controller.tipLabel.setText(lang("gui.logconsole.initialized")));
 			new GuiConsoleTask(pin).start();
 		} catch (IOException e) {
 			e.printStackTrace();

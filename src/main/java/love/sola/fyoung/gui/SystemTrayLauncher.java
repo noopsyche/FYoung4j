@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import love.sola.fyoung.NoGuiLauncher;
 import love.sola.fyoung.gui.controller.LogViewController;
+import love.sola.fyoung.gui.i18n.Lang;
 
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.io.IOException;
 
 /**
  * ***********************************************
@@ -26,12 +26,11 @@ public class SystemTrayLauncher extends Application {
 	public static boolean GUI_MODE = false;
 	public static Stage primaryStage = null;
 	public static LogViewController controller = null;
-	public static ResourceBundle bundle = null;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		SystemTrayLauncher.primaryStage = primaryStage;
-		Parent root = FXMLLoader.load(getClass().getResource("/assets/fxml/guilog.fxml"), bundle);
+		Parent root = FXMLLoader.load(getClass().getResource("/assets/fxml/guilog.fxml"), Lang.bundle);
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.setScene(new Scene(root));
 		primaryStage.getScene().setFill(Color.TRANSPARENT);
@@ -49,14 +48,17 @@ public class SystemTrayLauncher extends Application {
 
 	private void debugInput() {
 		new Thread(() -> {
-			Scanner cin = new Scanner(System.in);
-			while (cin.hasNext()) {
-				String l = cin.nextLine();
-				if (l.equals("Open")) {
-					Platform.runLater(() -> primaryStage.show());
-					continue;
+			while (true) {
+				try {
+					String l = NoGuiLauncher.input.readLine();
+					if (l.equals("Open")) {
+						Platform.runLater(() -> primaryStage.show());
+						continue;
+					}
+					System.out.println(l);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				System.out.println(l);
 			}
 		}).start();
 	}
@@ -64,7 +66,6 @@ public class SystemTrayLauncher extends Application {
 
 	public static void main(String[] args) {
 		GUI_MODE = true;
-		bundle = ResourceBundle.getBundle("assets.lang.lang");
 		launch(args);
 		Platform.setImplicitExit(false);
 	}

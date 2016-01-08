@@ -43,7 +43,7 @@ public class AllInOne {
 			SystemTray tray = SystemTray.getSystemTray();
 
 			// load an image
-			Image image = ImageIO.read(getClass().getResourceAsStream("/assets/icon/233.png"));
+			Image image = ImageIO.read(getClass().getResourceAsStream("/assets/icon/offline_16x16.png"));
 
 			// create a action listener to listen for default action executed on the tray icon
 			ActionListener listener = new ActionListener() {
@@ -54,7 +54,7 @@ public class AllInOne {
 				}
 			};
 			// create a popup menu
-			PopupMenu popup = new PopupMenu();
+			PopupMenu popup = new PopupMenu("Label");
 			// create menu item for the default action
 			MenuItem defaultItem = new MenuItem("Test \u4e2d\u6587");
 			defaultItem.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, Toolkit.getDefaultToolkit().getScreenResolution() / 96 * 12));

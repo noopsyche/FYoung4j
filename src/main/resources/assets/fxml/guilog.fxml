@@ -8,19 +8,19 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onLayoutDrag" onMousePressed="#onLayoutPressed" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="love.sola.fyoung.gui.controller.LogViewController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onLayoutDrag" onMousePressed="#onLayoutPressed" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="love.sola.fyoung.gui.controller.LogViewController">
     <center>
-        <TextArea fx:id="guiConsole" editable="false" opacity="0.8" prefHeight="360.0" prefWidth="600.0" style="-fx-background-color: black; -fx-text-fill: #00FF00; -fx-highlight-fill: #00FF00; -fx-highlight-text-fill: black; -fx-control-inner-background: black;" text="Your's black technology." wrapText="true" BorderPane.alignment="CENTER">
+        <TextArea fx:id="guiConsole" editable="false" prefHeight="360.0" prefWidth="600.0" stylesheets="@guilog.css" text="Your's black technology." wrapText="true" BorderPane.alignment="CENTER">
             <font>
                 <Font name="Consolas" size="14.0" />
             </font>
         </TextArea>
     </center>
     <top>
-      <GridPane alignment="CENTER_LEFT" prefHeight="30.0" styleClass="tool-bar" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
+      <GridPane alignment="CENTER_LEFT" opacity="0.9" prefHeight="30.0" styleClass="tool-bar" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -44,7 +44,7 @@
       </GridPane>
     </top>
     <bottom>
-        <ToolBar nodeOrientation="LEFT_TO_RIGHT" opacity="0.95">
+        <ToolBar nodeOrientation="LEFT_TO_RIGHT" opacity="0.9">
             <items>
                 <Button fx:id="editCfgBtn" mnemonicParsing="false" text="%gui.logconsole.edit_config" />
                 <Pane HBox.hgrow="ALWAYS" />

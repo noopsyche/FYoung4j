@@ -50,7 +50,7 @@ public class LogViewController implements Initializable {
 
 	@FXML
 	public void onClear(MouseEvent evt) {
-		tipLabel.setText(bundle.getString("Cleared"));
+		tipLabel.setText(bundle.getString("gui.logconsole.cleared"));
 		guiConsole.setText("");
 	}
 
