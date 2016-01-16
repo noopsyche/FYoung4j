@@ -1,7 +1,6 @@
 username: '153909*****'
 password: '********'
 heartbeatPacket: true
-routerMode: true
 autoFetchIP: true
 #clientIP:
 #nasIP:

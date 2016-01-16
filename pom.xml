@@ -7,7 +7,7 @@
     <groupId>love.sola.fyoung</groupId>
     <artifactId>FYoung</artifactId>
     <packaging>jar</packaging>
-    <version>0.3</version>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

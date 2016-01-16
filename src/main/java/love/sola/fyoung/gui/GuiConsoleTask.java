@@ -27,8 +27,8 @@ public class GuiConsoleTask extends Thread {
 		while (cin.hasNext()) {
 			String line = cin.nextLine();
 			Platform.runLater(() -> {
-				SystemTrayLauncher.controller.guiConsole.appendText(line);
-				SystemTrayLauncher.controller.guiConsole.appendText("\n");
+				SystemTrayLauncher.logView.guiConsole.appendText(line);
+				SystemTrayLauncher.logView.guiConsole.appendText("\n");
 			});
 		}
 	}
@@ -38,7 +38,7 @@ public class GuiConsoleTask extends Thread {
 			PipedOutputStream pout = new PipedOutputStream();
 			PipedInputStream pin = new PipedInputStream(pout);
 			System.setOut(new PrintStream(pout));
-			Platform.runLater(() -> SystemTrayLauncher.controller.tipLabel.setText(lang("gui.logconsole.initialized")));
+			Platform.runLater(() -> SystemTrayLauncher.logView.tipLabel.setText(lang("gui.logconsole.initialized")));
 			new GuiConsoleTask(pin).start();
 		} catch (IOException e) {
 			e.printStackTrace();

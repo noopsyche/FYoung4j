@@ -1,8 +1,16 @@
 package love.sola.fyoung.config;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
+import org.yaml.snakeyaml.introspector.Property;
+import org.yaml.snakeyaml.introspector.PropertyUtils;
+import org.yaml.snakeyaml.representer.Representer;
 
+import java.beans.IntrospectionException;
 import java.io.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * ***********************************************
@@ -14,30 +22,35 @@ public class ConfigLoader {
 
 	public static final File CONFIG_FILE = new File("config.yml");
 
-
-	public static Config loadConfig(ClassLoader clzLoader) {
+	public static Config loadConfig() {
 		Yaml yml = new Yaml();
 		if (!CONFIG_FILE.exists()) {
-			saveResource(clzLoader, "config.yml", true);
+			saveResource("config.yml", true);
 		}
-		try {
-			FileInputStream fin = new FileInputStream(CONFIG_FILE);
-			Config cfg = yml.loadAs(fin, Config.class);
-			fin.close();
-			return cfg;
+		try (FileInputStream fin = new FileInputStream(CONFIG_FILE)) {
+			return yml.loadAs(fin, Config.class);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void saveConfig() {
+		try (FileWriter writer = new FileWriter(CONFIG_FILE, false)) {
+			Representer repr = new Representer();
+			repr.setPropertyUtils(new UnsortedPropertyUtils());
+			writer.write(new Yaml(repr).dumpAs(Config.I, null, DumperOptions.FlowStyle.BLOCK));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
-	public static void saveResource(ClassLoader clzLoader, String resourcePath, boolean replace) {
+	public static void saveResource(String resourcePath, boolean replace) {
 		if (resourcePath == null || resourcePath.equals("")) {
 			throw new IllegalArgumentException("ResourcePath cannot be null or empty");
 		}
 
 		resourcePath = resourcePath.replace('\\', '/');
-		InputStream in = clzLoader.getResourceAsStream(resourcePath);
+		InputStream in = ClassLoader.getSystemResourceAsStream(resourcePath);
 
 		File outFile = new File(resourcePath);
 		int lastIndex = resourcePath.lastIndexOf('/');
@@ -63,5 +76,11 @@ public class ConfigLoader {
 		}
 	}
 
+	private static class UnsortedPropertyUtils extends PropertyUtils {
+		@Override
+		protected Set<Property> createPropertySet(Class<? extends Object> type, BeanAccess bAccess) throws IntrospectionException {
+			return new LinkedHashSet<>(getPropertiesMap(type, BeanAccess.FIELD).values());
+		}
+	}
 
 }

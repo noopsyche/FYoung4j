@@ -3,13 +3,9 @@ package love.sola.fyoung.gui;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import love.sola.fyoung.NoGuiLauncher;
+import love.sola.fyoung.gui.controller.EditConfigController;
 import love.sola.fyoung.gui.controller.LogViewController;
 import love.sola.fyoung.gui.i18n.Lang;
 
@@ -24,26 +20,37 @@ import java.io.IOException;
 public class SystemTrayLauncher extends Application {
 
 	public static boolean GUI_MODE = false;
-	public static Stage primaryStage = null;
-	public static LogViewController controller = null;
+	public static Stage logViewStage = null;
+	public static Stage configStage = null;
+	public static LogViewController logView = null;
+	public static EditConfigController configView = null;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		SystemTrayLauncher.primaryStage = primaryStage;
-		Parent root = FXMLLoader.load(getClass().getResource("/assets/fxml/guilog.fxml"), Lang.bundle);
-		primaryStage.initStyle(StageStyle.TRANSPARENT);
-		primaryStage.setScene(new Scene(root));
-		primaryStage.getScene().setFill(Color.TRANSPARENT);
-		primaryStage.getIcons().addAll(
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_16x16.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_24x24.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_32x32.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_48x48.png"))
-		);
-		primaryStage.show();
+		logViewStage = primaryStage;
+		configStage = new Stage();
+
+		loadLogViewStage();
+		logViewStage.show();
+		loadConfigStage();
+
 		GuiConsoleTask.initGuiConsole();
 		NoGuiLauncher.init();
 		debugInput();
+	}
+
+	private void loadLogViewStage() throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/guilog.fxml"), Lang.bundle);
+		loader.load();
+		logView = loader.getController();
+		logView.setup(logViewStage);
+	}
+
+	private void loadConfigStage() throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/edit_config.fxml"), Lang.bundle);
+		loader.load();
+		configView = loader.getController();
+		configView.setup(configStage, logViewStage);
 	}
 
 	private void debugInput() {
@@ -52,7 +59,7 @@ public class SystemTrayLauncher extends Application {
 				try {
 					String l = NoGuiLauncher.input.readLine();
 					if (l.equals("Open")) {
-						Platform.runLater(() -> primaryStage.show());
+						Platform.runLater(() -> logViewStage.show());
 						continue;
 					}
 					System.out.println(l);

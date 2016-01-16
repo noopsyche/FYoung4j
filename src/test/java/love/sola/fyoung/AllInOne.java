@@ -1,10 +1,6 @@
 package love.sola.fyoung;
 
-import love.sola.fyoung.config.Config;
-import org.junit.Test;
-
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,12 +17,6 @@ import java.util.Scanner;
  */
 public class AllInOne {
 
-	@Test
-	public void testYaml() {
-		System.out.println(Config.I);
-	}
-
-	@Test
 	public void testTray() throws IOException {
 		int pixelPerInch=java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
 		System.out.println("pixelPerInch: "+pixelPerInch);
@@ -94,14 +84,6 @@ public class AllInOne {
 		// ...
 		Scanner cin = new Scanner(System.in);
 		cin.nextLine();
-	}
-
-	@Test
-	public void testFont() {
-		System.out.println(new JLabel("呵呵哒").getFont());
-		for (Font f : java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()) {
-			System.out.println(f.getName());
-		}
 	}
 
 }

@@ -2,72 +2,71 @@ package love.sola.fyoung.gui.controller;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Getter;
-import love.sola.fyoung.gui.ResizeListener;
-import love.sola.fyoung.gui.SystemTrayLauncher;
+import love.sola.fyoung.config.Config;
+import love.sola.fyoung.config.ConfigLoader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * ***********************************************
- * Created by Sola on 2015/12/24.
+ * Created by Sola on 2016/1/9.
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class LogViewController implements Initializable {
+public class EditConfigController implements Initializable {
 
 	private ResourceBundle bundle;
 	@Getter
-	public Stage stage;
+	private Stage stage;
 
 	public BorderPane root;
-	public Label tipLabel;
-	public Button clearBtn;
-	public TextArea guiConsole;
-	public Button editCfgBtn;
-	public Button closeBtn;
+	public Label title;
+	public TextField account;
+	public PasswordField password;
+	public CheckBox heartBeatPacket;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
-		SystemTrayLauncher.logView = this;
 	}
 
-	public void setup(Stage stage) {
+	public void setup(Stage stage, Stage modal) {
 		this.stage = stage;
+		stage.initOwner(modal);
+		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
-		stage.getIcons().addAll(
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_16x16.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_24x24.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_32x32.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_48x48.png"))
-		);
-		ResizeListener.addResizeListener(stage);
-	}
-
-	public void onClear(MouseEvent evt) {
-		tipLabel.setText(bundle.getString("gui.logconsole.cleared"));
-		guiConsole.setText("");
 	}
 
 	public void onClose(MouseEvent evt) {
-		SystemTrayLauncher.logViewStage.close();
+		account.setText(Config.I.username);
+		password.setText(Config.I.password);
+		heartBeatPacket.setSelected(Config.I.heartbeatPacket);
+		stage.close();
 	}
 
-	public void onEditConfig(MouseEvent evt) {
-		SystemTrayLauncher.configStage.show();
+	public void onSave(MouseEvent evt) {
+		Config.I.username = account.getText();
+		Config.I.password = password.getText();
+		Config.I.heartbeatPacket = heartBeatPacket.isSelected();
+		ConfigLoader.saveConfig();
+		stage.close();
+	}
+
+	public void setFirst() {
 	}
 
 	private double xOffset = 0;
@@ -82,5 +81,4 @@ public class LogViewController implements Initializable {
 		root.getScene().getWindow().setX(evt.getScreenX() - xOffset);
 		root.getScene().getWindow().setY(evt.getScreenY() - yOffset);
 	}
-
 }

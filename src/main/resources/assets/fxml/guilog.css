@@ -7,20 +7,8 @@
     /*-fx-control-inner-background: -fx-background-color;*/
 }
 
-.text-area .scroll-pane {
-    -fx-background-color: transparent;
-}
-
-.text-area .scroll-pane .viewport{
-    -fx-background-color: transparent;
-}
-
-.text-area .scroll-pane .content{
-    -fx-background-color: transparent;
-}
-
-.text-area .content {
-    -fx-background-color: transparent;
+.text-area .viewport, .text-area .content {
+    -fx-background-color: transparent ;
 }
 
 .text-area:disabled {

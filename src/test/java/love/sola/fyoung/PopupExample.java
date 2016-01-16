@@ -55,7 +55,7 @@ public class PopupExample extends Application {
       @Override public void handle(ActionEvent event) {
         stage.show();
         contextMenu.show(stage);
-//        popup.show(primaryStage);
+//        popup.show(logViewStage);
 //        contextMenu.show(popup);
 
       }
