@@ -8,11 +8,11 @@ import love.sola.fyoung.config.Config;
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class DebugLogger {
+public class OutputFormatter {
 
 	public static void logTrace(String message, Exception e) {
+		if (message != null) System.err.println(message);
 		if (Config.I.debugMode) {
-			if (message != null) System.err.println(message);
 			if (e != null) e.printStackTrace();
 		}
 	}

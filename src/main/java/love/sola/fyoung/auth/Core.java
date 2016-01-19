@@ -1,7 +1,8 @@
 package love.sola.fyoung.auth;
 
 import com.google.gson.Gson;
-import love.sola.fyoung.log.DebugLogger;
+import com.google.gson.reflect.TypeToken;
+import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public class Core {
 
-	public static final String IS_WIFI = "1050";
+	public static final String IS_WIFI = "1050"; //4060 double client
 	public static final String KEY_NAS_IP = "nasip";
 	public static final String KEY_CLIENT_IP = "clientip";
 	public static final String KEY_MAC = "mac";
@@ -33,40 +34,9 @@ public class Core {
 	public static final String KEY_TOKEN = "challenge";
 	public static final String KEY_RES_INFO = "resinfo";
 
-	public static String postJson(String target, Map<String, String> conf) throws Exception {
-		URL url = new URL(target);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(500);
-		conn.setReadTimeout(500);
-		conn.addRequestProperty("User-Agent", "Mozilla");
-		conn.addRequestProperty("Content-Type", "application/json");
-		conn.setDoOutput(true);
-		OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-		writer.write(new Gson().toJson(conf));
-		writer.close();
-		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-		String inputLine;
-		StringBuilder html = new StringBuilder();
-		while ((inputLine = in.readLine()) != null) {
-			html.append(inputLine);
-		}
-		in.close();
-		return html.toString();
-	}
+	protected static Gson gson = new Gson();
 
-	public static String postJsonWithRetry(String target, Map<String, String> conf, int retry) throws Exception {
-		for (; retry > 0; retry--) {
-			try {
-				return postJson(target, conf);
-			} catch (Exception e) {
-				System.out.println("Failed. Retry: " + retry);
-				DebugLogger.logTrace("Failed Trace: ", e);
-			}
-		}
-		return null;
-	}
-
-	public static String get(String target, Map<String, String> conf) throws Exception {
+	public static Map<String, String> get(String target, Map<String, String> conf) throws Exception {
 		URL url = new URL(formatURLParam(target, conf));
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setConnectTimeout(5000);
@@ -78,10 +48,52 @@ public class Core {
 		while ((inputLine = in.readLine()) != null) {
 			html.append(inputLine);
 		}
-		return html.toString();
+		Map<String, String> map = gson.fromJson(html.toString(), new TypeToken<Map<String, String>>() { }.getType());
+		if (map == null) {
+			throw new RuntimeException("Failed parse response to map: " + html.toString());
+		}
+		return map;
 	}
 
-	public static String formatURLParam(String url, Map<String, String> conf) {
+	public static Map<String, String> post(String target, Map<String, String> conf) throws Exception {
+		URL url = new URL(target);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(500);
+		conn.setReadTimeout(500);
+		conn.setRequestMethod("POST");
+		conn.addRequestProperty("User-Agent", "Mozilla");
+		conn.addRequestProperty("Content-Type", "application/json");
+		conn.setDoOutput(true);
+		OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
+		writer.write(gson.toJson(conf));
+		writer.close();
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+		String inputLine;
+		StringBuilder html = new StringBuilder();
+		while ((inputLine = in.readLine()) != null) {
+			html.append(inputLine);
+		}
+		in.close();
+		Map<String, String> map = gson.fromJson(html.toString(), new TypeToken<Map<String, String>>() { }.getType());
+		if (map == null) {
+			throw new RuntimeException("Failed parse response to map: " + html.toString());
+		}
+		return map;
+	}
+
+	public static Map<String, String> postWithRetry(String target, Map<String, String> conf, int retry) throws Exception {
+		for (; retry > 0; retry--) {
+			try {
+				return post(target, conf);
+			} catch (Exception e) {
+				System.out.println("Failed. Retry: " + retry);
+				OutputFormatter.logTrace("Failed Trace: ", e);
+			}
+		}
+		throw new RuntimeException(); //TODO Handle unknown host exception
+	}
+
+	private static String formatURLParam(String url, Map<String, String> conf) {
 		url += '?';
 		for (Map.Entry<String, String> entry : conf.entrySet()) {
 			try {

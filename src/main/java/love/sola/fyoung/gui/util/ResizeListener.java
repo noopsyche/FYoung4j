@@ -1,4 +1,4 @@
-package love.sola.fyoung.gui;
+package love.sola.fyoung.gui.util;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

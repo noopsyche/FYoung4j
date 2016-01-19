@@ -12,7 +12,7 @@ import java.io.PrintStream;
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class LogManager {
+public class Log4jAdapter {
 
 	@Getter
 	private static Logger logger;

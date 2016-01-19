@@ -12,9 +12,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Getter;
-import love.sola.fyoung.gui.ResizeListener;
+import love.sola.fyoung.gui.GuiConsole;
+import love.sola.fyoung.gui.util.ResizeListener;
 import love.sola.fyoung.gui.SystemTrayLauncher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,6 +31,7 @@ public class LogViewController implements Initializable {
 	private ResourceBundle bundle;
 	@Getter
 	public Stage stage;
+	public GuiConsole console;
 
 	public BorderPane root;
 	public Label tipLabel;
@@ -55,6 +58,11 @@ public class LogViewController implements Initializable {
 				new Image(getClass().getResourceAsStream("/assets/icon/icon_48x48.png"))
 		);
 		ResizeListener.addResizeListener(stage);
+		try {
+			console = new GuiConsole(guiConsole);
+		} catch (IOException e) {
+			//TODO Handle exception
+		}
 	}
 
 	public void onClear(MouseEvent evt) {

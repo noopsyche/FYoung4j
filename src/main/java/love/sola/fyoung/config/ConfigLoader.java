@@ -9,6 +9,7 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import java.beans.IntrospectionException;
 import java.io.*;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,64 +23,62 @@ public class ConfigLoader {
 
 	public static final File CONFIG_FILE = new File("config.yml");
 
-	public static Config loadConfig() {
-		Yaml yml = new Yaml();
+	protected static Representer repr;
+	protected static Yaml yaml;
+
+	static {
+		repr = new Representer();
+		repr.setPropertyUtils(new PropertyUtils(){
+			@Override
+			protected Set<Property> createPropertySet(Class<?> type, BeanAccess bAccess) throws IntrospectionException {
+				Set<Property> properties = new LinkedHashSet<>();
+				Collection<Property> props = getPropertiesMap(type, bAccess).values();
+				for (Property property : props) {
+					if (property.isReadable() && property.isWritable()) { //Allow read only = false
+						properties.add(property);
+					}
+				}
+				return properties;
+			}
+		});
+		yaml = new Yaml(repr);
+	}
+
+	public static Config loadConfig() throws IOException {
 		if (!CONFIG_FILE.exists()) {
 			saveResource("config.yml", true);
 		}
 		try (FileInputStream fin = new FileInputStream(CONFIG_FILE)) {
-			return yml.loadAs(fin, Config.class);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			return yaml.loadAs(fin, Config.class);
 		}
 	}
 
-	public static void saveConfig() {
+	public static void saveConfig(Config config) throws IOException {
 		try (FileWriter writer = new FileWriter(CONFIG_FILE, false)) {
-			Representer repr = new Representer();
-			repr.setPropertyUtils(new UnsortedPropertyUtils());
-			writer.write(new Yaml(repr).dumpAs(Config.I, null, DumperOptions.FlowStyle.BLOCK));
-		} catch (IOException e) {
-			e.printStackTrace();
+			writer.write(yaml.dumpAs(config, null, DumperOptions.FlowStyle.BLOCK));
 		}
 	}
 
-	public static void saveResource(String resourcePath, boolean replace) {
+	public static void saveResource(String resourcePath, boolean replace) throws IOException {
 		if (resourcePath == null || resourcePath.equals("")) {
 			throw new IllegalArgumentException("ResourcePath cannot be null or empty");
 		}
-
-		resourcePath = resourcePath.replace('\\', '/');
-		InputStream in = ClassLoader.getSystemResourceAsStream(resourcePath);
-
 		File outFile = new File(resourcePath);
 		int lastIndex = resourcePath.lastIndexOf('/');
 		File outDir = new File(resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
-
 		if (!outDir.exists()) {
 			outDir.mkdirs();
 		}
-
-		try {
-			if (!outFile.exists() || replace) {
-				OutputStream out = new FileOutputStream(outFile);
+		if (!outFile.exists() || replace) {
+			try (InputStream in = ClassLoader.getSystemResourceAsStream(resourcePath);
+			     OutputStream out = new FileOutputStream(outFile)) {
 				byte[] buf = new byte[1024];
 				int len;
 				while ((len = in.read(buf)) > 0) {
 					out.write(buf, 0, len);
 				}
-				out.close();
 				in.close();
 			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	private static class UnsortedPropertyUtils extends PropertyUtils {
-		@Override
-		protected Set<Property> createPropertySet(Class<? extends Object> type, BeanAccess bAccess) throws IntrospectionException {
-			return new LinkedHashSet<>(getPropertiesMap(type, BeanAccess.FIELD).values());
 		}
 	}
 

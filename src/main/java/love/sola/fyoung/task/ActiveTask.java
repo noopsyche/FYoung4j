@@ -1,9 +1,9 @@
 package love.sola.fyoung.task;
 
-import love.sola.fyoung.NoGuiLauncher;
+import love.sola.fyoung.Client;
 import love.sola.fyoung.auth.Active;
 import love.sola.fyoung.config.Config;
-import love.sola.fyoung.log.DebugLogger;
+import love.sola.fyoung.log.OutputFormatter;
 import love.sola.fyoung.util.NetUtil;
 
 import java.util.TimerTask;
@@ -16,8 +16,6 @@ import java.util.TimerTask;
  */
 public class ActiveTask extends TimerTask {
 
-	public static ActiveTask INSTANCE = new ActiveTask();
-
 	public ActiveTask() {
 		System.out.println("ActiveTask initialized");
 	}
@@ -29,13 +27,13 @@ public class ActiveTask extends TimerTask {
 			if ("在线".equals(result)) {
 				System.out.println("Active Success");
 			} else {
-				DebugLogger.logTrace("Active failed with return result :" + result, null);
+				OutputFormatter.logTrace("Active failed with return result :" + result, null);
 			}
 		} catch (Exception e) {
 			System.out.println("Active Failed");
-			DebugLogger.logTrace("Active failed with trace:",e);
+			OutputFormatter.logTrace("Active failed with trace:",e);
 			if (!NetUtil.isInternet()) {
-				NoGuiLauncher.input.writer.println("relogin");
+				Client.input.writeLine("relogin");
 			}
 		}
 	}

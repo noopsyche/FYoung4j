@@ -4,10 +4,10 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import love.sola.fyoung.NoGuiLauncher;
+import love.sola.fyoung.Client;
+import love.sola.fyoung.config.Lang;
 import love.sola.fyoung.gui.controller.EditConfigController;
 import love.sola.fyoung.gui.controller.LogViewController;
-import love.sola.fyoung.gui.i18n.Lang;
 
 import java.io.IOException;
 
@@ -19,7 +19,6 @@ import java.io.IOException;
  */
 public class SystemTrayLauncher extends Application {
 
-	public static boolean GUI_MODE = false;
 	public static Stage logViewStage = null;
 	public static Stage configStage = null;
 	public static LogViewController logView = null;
@@ -29,14 +28,9 @@ public class SystemTrayLauncher extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		logViewStage = primaryStage;
 		configStage = new Stage();
-
 		loadLogViewStage();
 		logViewStage.show();
 		loadConfigStage();
-
-		GuiConsoleTask.initGuiConsole();
-		NoGuiLauncher.init();
-		debugInput();
 	}
 
 	private void loadLogViewStage() throws IOException {
@@ -53,11 +47,17 @@ public class SystemTrayLauncher extends Application {
 		configView.setup(configStage, logViewStage);
 	}
 
-	private void debugInput() {
+	public static void main(String[] args) {
+		launch(args);
+		Platform.setImplicitExit(false);
+		debugInput();
+	}
+
+	private static void debugInput() {
 		new Thread(() -> {
 			while (true) {
 				try {
-					String l = NoGuiLauncher.input.readLine();
+					String l = Client.input.readLine();
 					if (l.equals("Open")) {
 						Platform.runLater(() -> logViewStage.show());
 						continue;
@@ -68,13 +68,6 @@ public class SystemTrayLauncher extends Application {
 				}
 			}
 		}).start();
-	}
-
-
-	public static void main(String[] args) {
-		GUI_MODE = true;
-		launch(args);
-		Platform.setImplicitExit(false);
 	}
 
 }

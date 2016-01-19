@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Getter;
+import love.sola.fyoung.Client;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.config.ConfigLoader;
 
@@ -52,9 +53,9 @@ public class EditConfigController implements Initializable {
 	}
 
 	public void onClose(MouseEvent evt) {
-		account.setText(Config.I.username);
-		password.setText(Config.I.password);
-		heartBeatPacket.setSelected(Config.I.heartbeatPacket);
+		account.setText(Client.config_raw.username);
+		password.setText(Client.config_raw.password);
+		heartBeatPacket.setSelected(Client.config_raw.heartbeatPacket);
 		stage.close();
 	}
 

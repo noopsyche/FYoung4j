@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
-import static love.sola.fyoung.gui.i18n.Lang.lang;
+import static love.sola.fyoung.config.Lang.lang;
 
 /**
  * ***********************************************

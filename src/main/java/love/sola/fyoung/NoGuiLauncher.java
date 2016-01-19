@@ -1,12 +1,8 @@
 package love.sola.fyoung;
 
-import love.sola.fyoung.auth.Challenge;
-import love.sola.fyoung.auth.Login;
-import love.sola.fyoung.auth.Logout;
 import love.sola.fyoung.config.Config;
-import love.sola.fyoung.log.DebugLogger;
+import love.sola.fyoung.log.OutputFormatter;
 import love.sola.fyoung.task.ActiveTask;
-import love.sola.fyoung.task.InputTask;
 import love.sola.fyoung.util.NetUtil;
 
 import java.io.IOException;
@@ -21,23 +17,14 @@ import java.util.Timer;
 public class NoGuiLauncher {
 
 	private static Timer timer;
-	public static InputTask input;
-
-	public static void init() {
-		input = new InputTask();
-		input.start();
-	}
 
 	public static void main(String[] args) {
-		init();
 		root:
 		while (true) {
 			try {
 				checkInternet();
 
-				checkPortal();
-
-				login();
+				Client.login();
 
 				if (timer != null) {
 					timer.cancel();
@@ -49,9 +36,9 @@ public class NoGuiLauncher {
 
 				try {
 					String line;
-					while ((line = input.readLine()) != null) {
+					while ((line = Client.input.readLine()) != null) {
 						if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
-							logout();
+							Client.logout();
 							break root;
 						}
 						if ("relogin".equalsIgnoreCase(line)) {
@@ -61,7 +48,7 @@ public class NoGuiLauncher {
 						System.out.println("Unknown command. (Simple command implementation, not finished yet.)");
 					}
 				} catch (IOException e) {
-					DebugLogger.logTrace("Error occurred while reading command via jline.", e);
+					OutputFormatter.logTrace("Error occurred while reading command via jline.", e);
 				}
 				System.exit(0);
 			} catch (Exception e) {
@@ -71,25 +58,6 @@ public class NoGuiLauncher {
 		System.exit(0);
 	}
 
-	public static void login() throws Exception {
-		System.out.println("Challenging token...");
-		String token = Challenge.post(Challenge.configure(Config.I.username));
-		System.out.println("Success challenged token: " + token);
-		System.out.println("Logging in...");
-		System.out.println(Login.post(Login.configure(Config.I.username, Config.I.password, token)));
-	}
-
-	public static void logout() throws Exception {
-		System.out.println("Logging out...");
-		System.out.println(Logout.post(Logout.configure()));
-	}
-
-	public static void checkPortal() {
-		String portal = NetUtil.getPortal();
-		if (portal != null && Config.I.autoFetchIP) {
-			NetUtil.autoFetchIP(portal);
-		}
-	}
 
 	public static void checkInternet() throws Exception {
 		boolean tryLogout = true;
@@ -97,7 +65,7 @@ public class NoGuiLauncher {
 			System.out.println("Internet Detected");
 			if (Config.I.clientIP != null && tryLogout) {
 				System.out.println("Trying to logout..");
-				logout();
+				Client.logout();
 				tryLogout = false;
 				continue;
 			}
@@ -105,7 +73,7 @@ public class NoGuiLauncher {
 			String line;
 			while (true) {
 				System.out.println("Type your current LAN IP Address to logout (or 'q' to quit):");
-				line = input.readLine();
+				line = Client.input.readLine();
 				if (line == null) continue;
 				if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
 					System.exit(0);
@@ -122,7 +90,5 @@ public class NoGuiLauncher {
 			tryLogout = true;
 		}
 	}
-
-
 
 }

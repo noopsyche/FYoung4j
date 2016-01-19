@@ -1,4 +1,4 @@
-package love.sola.fyoung.gui.i18n;
+package love.sola.fyoung.config;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class Lang {
 
 	public static ResourceBundle bundle;
-	public static Map<String, MessageFormat> format_cache = new HashMap<>();
+	private static Map<String, MessageFormat> format_cache = new HashMap<>();
 
 	static {
 		bundle = ResourceBundle.getBundle("assets.lang.lang");

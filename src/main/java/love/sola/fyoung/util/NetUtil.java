@@ -1,6 +1,6 @@
 package love.sola.fyoung.util;
 
-import love.sola.fyoung.config.Config;
+import love.sola.fyoung.Client;
 
 import java.io.IOException;
 import java.net.*;
@@ -19,19 +19,19 @@ public class NetUtil {
 	public static final String IP_PATTERN = "[1-9][0-9]{1,2}\\.([0-9]{1,3}\\.){2}[1-9][0-9]{0,2}";
 
 	public static String getLocalIP() {
-		if (Config.I.clientIP != null) {
-			return Config.I.clientIP;
+		if (Client.config.clientIP != null) {
+			return Client.config.clientIP;
 		}
 		try {
-			return Config.I.clientIP = InetAddress.getLocalHost().getHostAddress();
+			return Client.config.clientIP = InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 		}
 		return null;
 	}
 
 	public static String getMAC() {
-		if (Config.I.mac != null) {
-			return Config.I.mac;
+		if (Client.config.mac != null) {
+			return Client.config.mac;
 		}
 		try {
 			byte[] b = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress();
@@ -115,19 +115,19 @@ public class NetUtil {
 		Pattern pat = Pattern.compile(IP_PATTERN);
 		Matcher mat = pat.matcher(portal);
 		if (mat.find()) {
-			Config.I.clientIP = mat.group();
-			System.out.println("Fetched Client IP: " + Config.I.clientIP);
+			Client.config.clientIP = mat.group();
+			System.out.println("Fetched Client IP: " + Client.config.clientIP);
 		}
 		if (mat.find()) {
-			Config.I.nasIP = mat.group();
-			System.out.println("Fetched NAS IP: " + Config.I.nasIP);
+			Client.config.nasIP = mat.group();
+			System.out.println("Fetched NAS IP: " + Client.config.nasIP);
 		}
 	}
 
 	public static void resetDNS() {
-		if (Config.I.specifiedDNS != null) {
+		if (Client.config.specifiedDNS != null) {
 			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
-			System.setProperty("sun.net.spi.nameservice.nameservers", Config.I.specifiedDNS);
+			System.setProperty("sun.net.spi.nameservice.nameservers", Client.config.specifiedDNS);
 			System.out.println();
 		}
 	}
