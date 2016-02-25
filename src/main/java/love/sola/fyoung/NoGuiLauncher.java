@@ -63,7 +63,7 @@ public class NoGuiLauncher {
 		boolean tryLogout = true;
 		while (NetUtil.isInternet()) {
 			System.out.println("Internet Detected");
-			if (Config.I.clientIP != null && tryLogout) {
+			if (Client.config.clientIP != null && tryLogout) {
 				System.out.println("Trying to logout..");
 				Client.logout();
 				tryLogout = false;
@@ -83,8 +83,8 @@ public class NoGuiLauncher {
 					System.out.println("Invalid LAN IP Address");
 					continue;
 				}
-				Config.I.clientIP = line;
-				System.out.println("Client IP has been set to: " + Config.I.clientIP);
+				Client.config.clientIP = line;
+				System.out.println("Client IP has been set to: " + Client.config.clientIP);
 				break;
 			}
 			tryLogout = true;

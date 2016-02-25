@@ -1,6 +1,7 @@
 package love.sola.fyoung.util;
 
 import love.sola.fyoung.Client;
+import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
 import java.net.*;
@@ -25,6 +26,7 @@ public class NetUtil {
 		try {
 			return Client.config.clientIP = InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
+			OutputFormatter.logTrace("Failed to get localhost IP address.", e);
 		}
 		return null;
 	}
@@ -66,7 +68,7 @@ public class NetUtil {
 				return sb.substring(0, sb.length() - 1);
 			}
 		} catch (SocketException e) {
-			e.printStackTrace();
+			OutputFormatter.logTrace("Failed to get MAC Address.", e);
 		}
 		return null;
 	}
@@ -83,29 +85,31 @@ public class NetUtil {
 			if (conn.getResponseCode() == 200) {
 				return true;
 			}
+			return false;
 		} catch (IOException e) {
+			return false;
 		}
-		return false;
 	}
 
-	public static String getPortal() {
-		try {
-			URL url = new URL(TEST_URL);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setReadTimeout(5000);
-			conn.setRequestMethod("GET");
-			conn.setInstanceFollowRedirects(false);
-			if (conn.getResponseCode() == 302) {
-				return conn.getHeaderField("location");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+	public static String getPortal() throws IOException {
+		URL url = new URL(TEST_URL);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setReadTimeout(5000);
+		conn.setRequestMethod("GET");
+		conn.setInstanceFollowRedirects(false);
+		if (conn.getResponseCode() == 302) {
+			return conn.getHeaderField("location");
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public static void autoFetchIP() {
-		autoFetchIP(getPortal());
+		try {
+			autoFetchIP(getPortal());
+		} catch (IOException e) {
+			OutputFormatter.logTrace("Auto fetch Client/NAS IP failed.", e);
+		}
 	}
 
 	public static void autoFetchIP(String portal) {

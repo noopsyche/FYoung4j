@@ -6,8 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import love.sola.fyoung.Client;
 import love.sola.fyoung.config.Lang;
-import love.sola.fyoung.gui.controller.EditConfigController;
-import love.sola.fyoung.gui.controller.LogViewController;
+import love.sola.fyoung.gui.config.EditConfigController;
+import love.sola.fyoung.gui.console.LogViewController;
 
 import java.io.IOException;
 
@@ -48,8 +48,8 @@ public class SystemTrayLauncher extends Application {
 	}
 
 	public static void main(String[] args) {
-		launch(args);
 		Platform.setImplicitExit(false);
+		launch(args);
 		debugInput();
 	}
 

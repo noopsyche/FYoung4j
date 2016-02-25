@@ -82,15 +82,16 @@ public class Core {
 	}
 
 	public static Map<String, String> postWithRetry(String target, Map<String, String> conf, int retry) throws Exception {
-		for (; retry > 0; retry--) {
+		Throwable cause = null;
+		for (int i = 0; i < retry; i++) {
 			try {
 				return post(target, conf);
 			} catch (Exception e) {
-				System.out.println("Failed. Retry: " + retry);
-				OutputFormatter.logTrace("Failed Trace: ", e);
+				cause = e; //We only consider the final exception is the real one
+				OutputFormatter.logTrace("Retry " + (i + 1) + "failed.", e);
 			}
 		}
-		throw new RuntimeException(); //TODO Handle unknown host exception
+		throw new PostException(cause);
 	}
 
 	private static String formatURLParam(String url, Map<String, String> conf) {

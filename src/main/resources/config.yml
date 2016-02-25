@@ -1,10 +1,10 @@
-username: '153909*****'
-password: '********'
+username: null
+password: null
 heartbeatPacket: true
 autoFetchIP: true
-#clientIP:
-#nasIP:
-#mac:
+clientIP: null
+nasIP: null
+mac: null
 debugMode: false
 useLog4j: true
 useJLine: true

@@ -30,8 +30,9 @@ public class Config implements Cloneable {
 	public final Config clone() {
 		try {
 			return (Config) super.clone();
-		} catch (CloneNotSupportedException ignored) { }
-		return null;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

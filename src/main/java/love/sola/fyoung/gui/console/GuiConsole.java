@@ -1,7 +1,8 @@
-package love.sola.fyoung.gui;
+package love.sola.fyoung.gui.console;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import love.sola.fyoung.gui.SystemTrayLauncher;
 
 import java.io.*;
 import java.util.Scanner;

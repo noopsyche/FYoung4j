@@ -31,10 +31,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>love.sola.fyoung.NoGuiLauncher</Main-Class>
-                                        <Build-Number>${project.version}</Build-Number>
-                                    </manifestEntries>
+                                    <mainClass>love.sola.fyoung.Launcher</mainClass>>
                                 </transformer>
                             </transformers>
                         </configuration>

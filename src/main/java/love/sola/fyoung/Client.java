@@ -25,20 +25,22 @@ public class Client {
 	public static Config config;
 	public static Config config_raw;
 
-	public static void initialize() {
-
-
-
+	public static void initialize() throws IOException {
+		config_raw = initConfig();
+		config = config_raw.clone();
+		processConfig();
+		input = new Input();
+		activeTask = new ActiveTask();
 	}
 
+	private static Config initConfig() throws IOException {
+		return ConfigLoader.loadConfig();
+	}
 
-	private static void loadConfig() throws IOException {
-		config_raw = ConfigLoader.loadConfig();
-		if (config_raw == null) {
-			throw new NullPointerException("Configuration load failed.");
+	private static void processConfig() {
+		if (config.username == null) {
+
 		}
-		config = config_raw.clone();
-		initialize();
 		if (config.useSpecifiedDNS) {
 			NetUtil.resetDNS();
 		}
@@ -51,8 +53,6 @@ public class Client {
 		if (config.mac == null) {
 			config.mac = NetUtil.getMAC();
 		}
-		System.out.println("Successful loaded config.");
-		System.out.println("Config = " + config);
 	}
 
 

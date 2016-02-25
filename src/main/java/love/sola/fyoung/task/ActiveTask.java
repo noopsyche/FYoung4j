@@ -2,7 +2,6 @@ package love.sola.fyoung.task;
 
 import love.sola.fyoung.Client;
 import love.sola.fyoung.auth.Active;
-import love.sola.fyoung.config.Config;
 import love.sola.fyoung.log.OutputFormatter;
 import love.sola.fyoung.util.NetUtil;
 
@@ -23,15 +22,15 @@ public class ActiveTask extends TimerTask {
 	@Override
 	public void run() {
 		try {
-			String result = Active.post(Active.configure(Config.I.username));
+			String result = Active.post(Active.configure(Client.config.username));
 			if ("在线".equals(result)) {
 				System.out.println("Active Success");
 			} else {
-				OutputFormatter.logTrace("Active failed with return result :" + result, null);
+				System.err.println("Active failed with return result :" + result);
 			}
 		} catch (Exception e) {
-			System.out.println("Active Failed");
-			OutputFormatter.logTrace("Active failed with trace:",e);
+			System.err.println("Active Failed");
+			OutputFormatter.logTrace(e);
 			if (!NetUtil.isInternet()) {
 				Client.input.writeLine("relogin");
 			}

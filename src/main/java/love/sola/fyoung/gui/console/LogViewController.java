@@ -1,4 +1,4 @@
-package love.sola.fyoung.gui.controller;
+package love.sola.fyoung.gui.console;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -12,9 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Getter;
-import love.sola.fyoung.gui.GuiConsole;
-import love.sola.fyoung.gui.util.ResizeListener;
 import love.sola.fyoung.gui.SystemTrayLauncher;
+import love.sola.fyoung.gui.util.ResizeListener;
+import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,7 +43,6 @@ public class LogViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
-		SystemTrayLauncher.logView = this;
 	}
 
 	public void setup(Stage stage) {
@@ -61,7 +60,7 @@ public class LogViewController implements Initializable {
 		try {
 			console = new GuiConsole(guiConsole);
 		} catch (IOException e) {
-			//TODO Handle exception
+			OutputFormatter.logTrace("GUI Console initializing failed.", e);
 		}
 	}
 

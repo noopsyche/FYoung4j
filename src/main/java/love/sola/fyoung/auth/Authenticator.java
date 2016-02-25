@@ -3,6 +3,7 @@ package love.sola.fyoung.auth;
 import love.sola.fyoung.util.ByteArrayUtil;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -14,7 +15,15 @@ import java.util.Map;
 public class Authenticator {
 
 	public static final String SECRET = "Eshore!@#";
+	public static final MessageDigest DIGEST;
 
+	static {
+		try {
+			DIGEST = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public static String getAuthenticator(String token, Map<String, String> map) {
 		String authenticator = map.get("clientip") + map.get("nasip") + map.get("mac") + map.get("timestamp");
@@ -26,15 +35,10 @@ public class Authenticator {
 	}
 
 	public static String getMD5(String s) {
-		try {
-			byte[] buf = s.getBytes();
-			MessageDigest messagedigest = MessageDigest.getInstance("MD5");
-			messagedigest.update(buf);
-			buf = messagedigest.digest();
-			return ByteArrayUtil.bytesToHex(buf).toUpperCase();
-		} catch (Exception e) {
-		}
-		return null;
+		byte[] buf = s.getBytes();
+		DIGEST.update(buf);
+		buf = DIGEST.digest();
+		return ByteArrayUtil.bytesToHex(buf).toUpperCase();
 	}
 
 

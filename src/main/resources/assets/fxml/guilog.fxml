@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root" onMouseDragged="#onLayoutDrag" onMousePressed="#onLayoutPressed" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="love.sola.fyoung.gui.controller.LogViewController">
+<BorderPane fx:id="root" onMouseDragged="#onLayoutDrag" onMousePressed="#onLayoutPressed" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="love.sola.fyoung.gui.console.LogViewController">
     <center>
         <TextArea fx:id="guiConsole" editable="false" prefHeight="360.0" prefWidth="600.0" stylesheets="@guilog.css" text="Your's black technology." wrapText="true" BorderPane.alignment="CENTER">
             <font>

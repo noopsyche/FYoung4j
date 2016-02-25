@@ -1,4 +1,4 @@
-package love.sola.fyoung.gui;
+package love.sola.fyoung.gui.tray;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
