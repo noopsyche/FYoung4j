@@ -8,6 +8,7 @@ import love.sola.fyoung.Client;
 import love.sola.fyoung.config.Lang;
 import love.sola.fyoung.gui.config.EditConfigController;
 import love.sola.fyoung.gui.console.LogViewController;
+import love.sola.fyoung.gui.impl.BasicImplements;
 
 import java.io.IOException;
 
@@ -24,13 +25,19 @@ public class SystemTrayLauncher extends Application {
 	public static LogViewController logView = null;
 	public static EditConfigController configView = null;
 
+	public static void main(String[] args) throws IOException {
+		BasicImplements.setupImplements();
+		Platform.setImplicitExit(false);
+		launch(args);
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		logViewStage = primaryStage;
 		configStage = new Stage();
 		loadLogViewStage();
-		logViewStage.show();
 		loadConfigStage();
+		Client.launch();
 	}
 
 	private void loadLogViewStage() throws IOException {
@@ -45,29 +52,6 @@ public class SystemTrayLauncher extends Application {
 		loader.load();
 		configView = loader.getController();
 		configView.setup(configStage, logViewStage);
-	}
-
-	public static void main(String[] args) {
-		Platform.setImplicitExit(false);
-		launch(args);
-		debugInput();
-	}
-
-	private static void debugInput() {
-		new Thread(() -> {
-			while (true) {
-				try {
-					String l = Client.input.readLine();
-					if (l.equals("Open")) {
-						Platform.runLater(() -> logViewStage.show());
-						continue;
-					}
-					System.out.println(l);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
 	}
 
 }

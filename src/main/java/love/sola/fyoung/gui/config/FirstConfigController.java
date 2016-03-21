@@ -19,6 +19,7 @@ import love.sola.fyoung.log.OutputFormatter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * ***********************************************
@@ -31,6 +32,7 @@ public class FirstConfigController implements Initializable {
 	private ResourceBundle bundle;
 	@Getter
 	private Stage stage;
+	private CountDownLatch latch;
 
 	public BorderPane root;
 	public Label title;
@@ -43,14 +45,15 @@ public class FirstConfigController implements Initializable {
 		bundle = resources;
 	}
 
-	public void setup(Stage stage) {
+	public void setup(Stage stage, CountDownLatch latch) {
+		this.latch = latch;
 		this.stage = stage;
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
 	}
 
-	public void onSave(MouseEvent evt) {
+	public void onSave(MouseEvent evt) throws IOException {
 		Client.config_raw.username = account.getText();
 		Client.config_raw.password = password.getText();
 		Client.config_raw.heartbeatPacket = heartBeatPacket.isSelected();
@@ -59,10 +62,8 @@ public class FirstConfigController implements Initializable {
 		} catch (IOException e) {
 			OutputFormatter.logTrace("Config file save failed", e);
 		}
-		synchronized (this) {
-			this.notifyAll();
-		}
 		stage.close();
+		latch.countDown();
 	}
 
 	private double xOffset = 0;

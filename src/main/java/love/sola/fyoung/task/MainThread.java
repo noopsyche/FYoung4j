@@ -1,63 +1,60 @@
-package love.sola.fyoung;
+package love.sola.fyoung.task;
 
+import love.sola.fyoung.Client;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.log.OutputFormatter;
-import love.sola.fyoung.task.ActiveTask;
 import love.sola.fyoung.util.NetUtil;
 
 import java.io.IOException;
-import java.util.Timer;
 
 /**
  * ***********************************************
- * Created by Sola on 2014/8/20.
+ * Created by Sola on 2016/3/19.
  * Don't modify this source without my agreement
  * ***********************************************
  */
-public class NoGuiLauncher {
+public class MainThread extends Thread {
 
-	private static Timer timer;
-
-	public static void main(String[] args) {
-		root:
-		while (true) {
-			try {
-				checkInternet();
-
-				Client.login();
-
-				if (timer != null) {
-					timer.cancel();
-				}
-				timer = new Timer();
-				timer.schedule(new ActiveTask(), 60 * 1000, 60 * 1000);
-
-				System.out.println("*****Enter 'q' to logout*****");
-
-				try {
-					String line;
-					while ((line = Client.input.readLine()) != null) {
-						if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
-							Client.logout();
-							break root;
-						}
-						if ("relogin".equalsIgnoreCase(line)) {
-							System.out.println("Relogging in...");
-							continue root;
-						}
-						System.out.println("Unknown command. (Simple command implementation, not finished yet.)");
-					}
-				} catch (IOException e) {
-					OutputFormatter.logTrace("Error occurred while reading command via jline.", e);
-				}
-				System.exit(0);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		System.exit(0);
+	public MainThread() {
+		super("MainThread");
 	}
 
+	@Override
+	public void run() {
+		try {
+			Client.loadConfig();
+			Client.initialize();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		command:
+		while (true) {
+			try {
+				String line;
+				while ((line = Client.input.readLine()) != null) {
+					Client.commandDispatcher.dispatch(line);
+				}
+			} catch (IOException e) {
+				OutputFormatter.logTrace("Error occurred while reading command via jline.", e);
+			}
+		}
+//		root:
+//		while (true) {
+//			try {
+//				checkInternet();
+//
+//				Client.login();
+//
+//				System.out.println("*****Enter 'q' to logout*****");
+//
+//
+//				System.exit(0);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		System.exit(0);
+	}
 
 	public static void checkInternet() throws Exception {
 		boolean tryLogout = true;
