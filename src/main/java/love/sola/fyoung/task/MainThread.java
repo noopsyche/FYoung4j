@@ -24,7 +24,7 @@ public class MainThread extends Thread {
 		try {
 			Client.loadConfig();
 			Client.initialize();
-		} catch (IOException e) {
+		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		command:

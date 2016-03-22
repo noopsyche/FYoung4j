@@ -47,7 +47,7 @@ public class Client {
 		}
 	}
 
-	public static void initialize() throws IOException {
+	public static void initialize() throws IOException, InstantiationException, IllegalAccessException {
 		processConfig();
 		input = new Input();
 		activeTask = new ActiveTask();
