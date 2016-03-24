@@ -3,6 +3,7 @@ package love.sola.fyoung.command;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import lombok.AllArgsConstructor;
+import love.sola.fyoung.util.collection.CaseInsensitiveMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class CommandDispatcher {
 
-	private Map<String, ExecutorInfo> executorMap = new HashMap<>();
+	private Map<String, ExecutorInfo> executorMap = new CaseInsensitiveMap<>();
 
 	public CommandDispatcher() throws IOException, IllegalAccessException, InstantiationException {
 		String pkg = getClass().getPackage().getName() + ".impl";

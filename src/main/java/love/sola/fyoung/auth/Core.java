@@ -2,6 +2,7 @@ package love.sola.fyoung.auth;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import love.sola.fyoung.Client;
 import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.BufferedReader;
@@ -77,6 +78,9 @@ public class Core {
 		Map<String, String> map = gson.fromJson(html.toString(), new TypeToken<Map<String, String>>() { }.getType());
 		if (map == null) {
 			throw new RuntimeException("Failed parse response to map: " + html.toString());
+		}
+		if (Client.config.debugMode) {
+			System.out.println("Response: " + map);
 		}
 		return map;
 	}
