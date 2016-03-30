@@ -32,7 +32,7 @@ public class ActiveTask extends TimerTask {
 			System.err.println("Active Failed");
 			OutputFormatter.logTrace(e);
 			if (!NetUtil.isInternet()) {
-				Client.input.writeLine("relogin");
+				Client.input.writeToInput("relogin");
 			}
 		}
 	}

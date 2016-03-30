@@ -1,6 +1,7 @@
 package love.sola.fyoung.command.impl;
 
 import love.sola.fyoung.Client;
+import love.sola.fyoung.command.Command;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.util.NetUtil;
 
@@ -12,8 +13,18 @@ import love.sola.fyoung.util.NetUtil;
  */
 public class LoginCommand {
 
+	@Command("login")
+	public void login(String command, String[] args) throws Exception {
+		logout(command, args);
+		if (NetUtil.isInternet()) {
+			System.out.println("Logout failed.");
+			return;
+		}
 
-	public static void checkInternet() throws Exception {
+	}
+
+	@Command("logout")
+	public void logout(String command, String[] args) throws Exception {
 		boolean tryLogout = true;
 		while (NetUtil.isInternet()) {
 			System.out.println("Internet Detected");
@@ -26,13 +37,8 @@ public class LoginCommand {
 			System.out.println("Logout failed");
 			String line;
 			while (true) {
-				System.out.println("Type your current LAN IP Address to logout (or 'q' to quit):");
-				line = Client.input.readLine();
+				line = Client.input.promptInput("Type your current LAN IP Address to logout (or 'q' to quit):");
 				if (line == null) continue;
-				if ("q".equalsIgnoreCase(line) || "exit".equalsIgnoreCase(line)) {
-					System.exit(0);
-					return;
-				}
 				if (!line.matches(Config.IP_REGEX)) {
 					System.out.println("Invalid LAN IP Address");
 					continue;

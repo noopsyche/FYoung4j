@@ -56,7 +56,15 @@ public class Input extends Thread {
 		}
 	}
 
-	public void writeLine(String line) {
+	public String promptInput(String... tip) throws IOException {
+		if (Client.GUI_MODE) {
+			return Client.inputRequester.apply(tip);
+		} else {
+			return readLine();
+		}
+	}
+
+	public void writeToInput(String line) {
 		writer.println(line);
 	}
 

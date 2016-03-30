@@ -26,6 +26,7 @@ public class SystemTrayLauncher extends Application {
 	public static EditConfigController configView = null;
 
 	public static void main(String[] args) throws IOException {
+		Client.GUI_MODE = true;
 		BasicImplements.setupImplements();
 		Platform.setImplicitExit(false);
 		launch(args);

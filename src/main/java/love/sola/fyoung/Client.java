@@ -25,7 +25,7 @@ public class Client {
 	public static Runnable firstTimeConfigurator = null;
 	public static Runnable applicationInitiator = null;
 	public static Runnable alreadyInternetNotifier = null;
-	public static Function<String, String[]> inputRequester = null;
+	public static Function<String[], String> inputRequester = null;
 
 	public static boolean GUI_MODE = false;
 	public static ActiveTask activeTask;

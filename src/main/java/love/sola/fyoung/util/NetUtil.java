@@ -73,7 +73,7 @@ public class NetUtil {
 		return null;
 	}
 
-	public static final String TEST_URL = "http://www.baidu.com";
+	public static final String TEST_URL = "http://www.msftncsi.com/ncsi.txt";
 
 	public static boolean isInternet() {
 		try {
