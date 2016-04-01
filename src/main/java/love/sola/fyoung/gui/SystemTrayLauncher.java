@@ -42,14 +42,14 @@ public class SystemTrayLauncher extends Application {
 	}
 
 	private void loadLogViewStage() throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/guilog.fxml"), Lang.bundle);
+		FXMLLoader loader = new FXMLLoader(FXMLResource.guilog, Lang.bundle);
 		loader.load();
 		logView = loader.getController();
 		logView.setup(logViewStage);
 	}
 
 	private void loadConfigStage() throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/edit_config.fxml"), Lang.bundle);
+		FXMLLoader loader = new FXMLLoader(FXMLResource.edit_config, Lang.bundle);
 		loader.load();
 		configView = loader.getController();
 		configView.setup(configStage, logViewStage);

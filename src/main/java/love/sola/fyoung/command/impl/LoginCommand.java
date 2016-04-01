@@ -37,7 +37,7 @@ public class LoginCommand {
 			System.out.println("Logout failed");
 			String line;
 			while (true) {
-				line = Client.input.promptInput("Type your current LAN IP Address to logout (or 'q' to quit):");
+				line = Client.input.promptInput("Type your current LAN IP Address to logout (or 'q' to quit):", "172.xxx.xxx.xxx");
 				if (line == null) continue;
 				if (!line.matches(Config.IP_REGEX)) {
 					System.out.println("Invalid LAN IP Address");

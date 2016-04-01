@@ -6,13 +6,13 @@ import love.sola.fyoung.auth.Logout;
 import love.sola.fyoung.command.CommandDispatcher;
 import love.sola.fyoung.config.Config;
 import love.sola.fyoung.config.ConfigLoader;
+import love.sola.fyoung.gui.prompt.PromptInputHandler;
 import love.sola.fyoung.log.Log4jAdapter;
 import love.sola.fyoung.task.ActiveTask;
 import love.sola.fyoung.task.MainThread;
 import love.sola.fyoung.util.NetUtil;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 /**
  * ***********************************************
@@ -24,8 +24,7 @@ public class Client {
 
 	public static Runnable firstTimeConfigurator = null;
 	public static Runnable applicationInitiator = null;
-	public static Runnable alreadyInternetNotifier = null;
-	public static Function<String[], String> inputRequester = null;
+	public static PromptInputHandler inputRequester = null;
 
 	public static boolean GUI_MODE = false;
 	public static ActiveTask activeTask;

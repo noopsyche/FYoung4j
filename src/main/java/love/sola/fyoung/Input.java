@@ -56,9 +56,9 @@ public class Input extends Thread {
 		}
 	}
 
-	public String promptInput(String... tip) throws IOException {
+	public String promptInput(String tip, String placeHolder) throws IOException {
 		if (Client.GUI_MODE) {
-			return Client.inputRequester.apply(tip);
+			return Client.inputRequester.requestInput(tip, placeHolder);
 		} else {
 			return readLine();
 		}

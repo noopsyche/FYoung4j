@@ -5,8 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import love.sola.fyoung.Client;
 import love.sola.fyoung.config.Lang;
-import love.sola.fyoung.gui.SystemTrayLauncher;
+import love.sola.fyoung.gui.FXMLResource;
 import love.sola.fyoung.gui.config.FirstConfigController;
+import love.sola.fyoung.gui.prompt.GUIPromptInputHandler;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -24,6 +25,7 @@ public class BasicImplements {
 	public static void setupImplements() {
 		Client.firstTimeConfigurator = BasicImplements::firstTimeConfig;
 		Client.applicationInitiator = BasicImplements::applicationInitiate;
+		Client.inputRequester = GUIPromptInputHandler::requestInput;
 	}
 
 	private static void firstTimeConfig() {
@@ -31,7 +33,7 @@ public class BasicImplements {
 		Platform.runLater(() -> {
 			try {
 				Stage fccStage = new Stage();
-				FXMLLoader loader = new FXMLLoader(SystemTrayLauncher.class.getResource("/assets/fxml/first_config.fxml"), Lang.bundle);
+				FXMLLoader loader = new FXMLLoader(FXMLResource.first_config, Lang.bundle);
 				loader.load();
 				FirstConfigController fcc = loader.getController();
 				fcc.setup(fccStage, latch);
