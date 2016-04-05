@@ -6,6 +6,7 @@ import love.sola.fyoung.log.OutputFormatter;
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,7 +84,8 @@ public class NetUtil {
 			conn.setRequestMethod("GET");
 			conn.setInstanceFollowRedirects(false);
 			if (conn.getResponseCode() == 200) {
-				return true;
+				Scanner in = new Scanner(conn.getInputStream());
+				return in.nextLine().equals("Microsoft NCSI");
 			}
 			return false;
 		} catch (IOException e) {
