@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import love.sola.fyoung.Client;
 import love.sola.fyoung.config.ConfigLoader;
@@ -52,13 +53,17 @@ public class EditConfigController implements Initializable {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
+		stage.setOnShowing(this::onShow);
 	}
 
-	public void onClose(MouseEvent evt) {
+	private void onShow(WindowEvent evt) {
 		account.setText(Client.config_raw.username);
 		password.setText(Client.config_raw.password);
 		heartBeatPacket.setSelected(Client.config_raw.heartbeatPacket);
 		autoLogin.setSelected(Client.config.autoLogin);
+	}
+
+	public void onClose(MouseEvent evt) {
 		stage.close();
 	}
 
@@ -66,6 +71,7 @@ public class EditConfigController implements Initializable {
 		Client.config_raw.username = account.getText();
 		Client.config_raw.password = password.getText();
 		Client.config_raw.heartbeatPacket = heartBeatPacket.isSelected();
+		Client.config_raw.autoLogin = autoLogin.isSelected();
 		try {
 			ConfigLoader.saveConfig(Client.config_raw);
 		} catch (IOException e) {

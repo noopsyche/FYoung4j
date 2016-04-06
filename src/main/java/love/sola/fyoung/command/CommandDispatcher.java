@@ -32,10 +32,10 @@ public class CommandDispatcher {
 			if (!Modifier.isPublic(clz.getModifiers())) continue; //skip non-public
 			Object instance = null;
 			for (Method method : clz.getDeclaredMethods()) {
-				if (!method.isAccessible()) continue; //skip non-public
+				if (!Modifier.isPublic(method.getModifiers())) continue; //skip non-public
 				if (!isExecutable(method)) continue; //skip not executable
 				if (instance == null) instance = clz.newInstance();
-				Command annotation = clz.getAnnotation(Command.class);
+				Command annotation = method.getAnnotation(Command.class);
 				registerExecutor(annotation.value(), instance, method);
 			}
 		}
@@ -69,7 +69,7 @@ public class CommandDispatcher {
 
 	private static boolean isExecutable(Method method) {
 		return method.isAnnotationPresent(Command.class)
-				&& method.getParameters().length >= 2
+				&& method.getParameters().length == 2
 				&& method.getParameters()[0].getType() == String.class
 				&& method.getParameters()[1].getType() == String[].class;
 	}

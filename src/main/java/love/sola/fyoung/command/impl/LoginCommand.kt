@@ -50,6 +50,9 @@ class LoginCommand {
             while (true) {
                 line = Client.input.promptInput(lang("prompt.internet.detected"), "172.xxx.xxx.xxx")
                 if (line == null) continue
+                if (line.equals("q", true) || line.equals("quit", true)) {
+                    return
+                }
                 if (!line.matches(Config.IP_REGEX.toRegex())) {
                     println("Invalid LAN IP Address")
                     continue

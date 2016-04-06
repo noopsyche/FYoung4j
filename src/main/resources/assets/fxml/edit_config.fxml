@@ -50,8 +50,8 @@
             <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
          </padding>
          <children>
-            <Button fx:id="close" mnemonicParsing="false" onMouseClicked="#onClose" text="%gui.config.close" />
-            <Button fx:id="save" mnemonicParsing="false" onMouseClicked="#onSave" text="%gui.config.save" />
+            <Button fx:id="close" cancelButton="true" mnemonicParsing="false" onMouseClicked="#onClose" text="%gui.config.close" />
+            <Button fx:id="save" defaultButton="true" mnemonicParsing="false" onMouseClicked="#onSave" text="%gui.config.save" />
          </children>
       </HBox>
    </bottom>
