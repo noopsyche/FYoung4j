@@ -13,10 +13,12 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
+import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import love.sola.fyoung.config.Lang
 import love.sola.fyoung.gui.FXMLResource
+import love.sola.fyoung.gui.util.StageUtil
 import java.net.URL
 import java.util.*
 import java.util.concurrent.CountDownLatch
@@ -48,12 +50,14 @@ class PromptController : Initializable {
         this.latch = latch
         this.stage = stage
         stage.initStyle(StageStyle.TRANSPARENT)
+        stage.initModality(Modality.APPLICATION_MODAL)
         stage.scene = Scene(root)
         stage.scene.fill = Color.TRANSPARENT
         this.tip!!.text = tip
         this.input!!.promptText = placeHolder
         stage.onCloseRequest = EventHandler { onClose() }
         stage.onHidden = EventHandler { onClose() }
+        StageUtil.iconify(stage, tip)
     }
 
     fun onEnter(keyEvent: KeyEvent) {

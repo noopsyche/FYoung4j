@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -14,6 +13,7 @@ import javafx.stage.StageStyle;
 import lombok.Getter;
 import love.sola.fyoung.gui.SystemTrayLauncher;
 import love.sola.fyoung.gui.util.ResizeListener;
+import love.sola.fyoung.gui.util.StageUtil;
 import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
@@ -50,12 +50,7 @@ public class LogViewController implements Initializable {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
-		stage.getIcons().addAll(
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_16x16.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_24x24.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_32x32.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_48x48.png"))
-		);
+		StageUtil.iconify(stage, bundle.getString("gui.logconsole.title"));
 		ResizeListener.addResizeListener(stage);
 		try {
 			console = new GuiConsole(guiConsole);

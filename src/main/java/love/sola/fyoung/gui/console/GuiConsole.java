@@ -18,9 +18,9 @@ import static love.sola.fyoung.config.Lang.lang;
 public class GuiConsole extends Thread {
 
 	private static boolean initialized = false;
-	PipedInputStream in;
-	PrintStream sysOut;
-	TextArea guiConsole;
+	private PipedInputStream in;
+	private PrintStream sysOut;
+	private TextArea guiConsole;
 
 	public GuiConsole(TextArea guiConsole) throws IOException {
 		if (initialized) {

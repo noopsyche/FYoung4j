@@ -13,6 +13,7 @@ import javafx.stage.WindowEvent;
 import lombok.Getter;
 import love.sola.fyoung.Client;
 import love.sola.fyoung.config.ConfigLoader;
+import love.sola.fyoung.gui.util.StageUtil;
 import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
@@ -53,7 +54,10 @@ public class EditConfigController implements Initializable {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
+
 		stage.setOnShowing(this::onShow);
+
+		StageUtil.iconify(stage, title.getText());
 	}
 
 	private void onShow(WindowEvent evt) {
