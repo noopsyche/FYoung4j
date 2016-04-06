@@ -33,7 +33,8 @@ public class BasicImplements {
 		Platform.runLater(() -> {
 			try {
 				Stage fccStage = new Stage();
-				FXMLLoader loader = new FXMLLoader(FXMLResource.first_config, Lang.bundle);
+				FXMLLoader loader = new FXMLLoader(FXMLResource.edit_config, Lang.bundle);
+				loader.setControllerFactory(param -> new FirstConfigController());
 				loader.load();
 				FirstConfigController fcc = loader.getController();
 				fcc.setup(fccStage, latch);

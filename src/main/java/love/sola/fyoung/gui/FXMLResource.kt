@@ -13,7 +13,6 @@ import kotlin.reflect.defaultType
  */
 object FXMLResource {
 
-    lateinit var first_config: URL
     lateinit var edit_config: URL
     lateinit var guilog: URL
     lateinit var tip_dialog: URL

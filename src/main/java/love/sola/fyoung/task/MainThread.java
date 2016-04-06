@@ -5,6 +5,8 @@ import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
 
+import static love.sola.fyoung.Client.*;
+
 /**
  * ***********************************************
  * Created by Sola on 2016/3/19.
@@ -25,33 +27,20 @@ public class MainThread extends Thread {
 		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		if (config.autoLogin) {
+			input.writeToInput("login");
+		}
 		command:
 		while (true) {
 			try {
 				String line;
-				while ((line = Client.input.readLine()) != null) {
-					Client.commandDispatcher.dispatch(line);
+				while ((line = input.readLine()) != null) {
+					commandDispatcher.dispatch(line);
 				}
 			} catch (IOException e) {
 				OutputFormatter.logTrace("Error occurred while reading command via jline.", e);
 			}
 		}
-//		root:
-//		while (true) {
-//			try {
-//				checkInternet();
-//
-//				Client.login();
-//
-//				System.out.println("*****Enter 'q' to logout*****");
-//
-//
-//				System.exit(0);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		System.exit(0);
 	}
 
 }

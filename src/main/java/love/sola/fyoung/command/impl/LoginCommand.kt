@@ -20,8 +20,15 @@ class LoginCommand {
         logout(command, args)
         if (NetUtil.isInternet()) {
             println("Logout failed.")
-            return
+        } else {
+            Client.login()
         }
+    }
+
+    @Command("relogin")
+    @Throws(Exception::class)
+    fun relogin(command: String, args: Array<String>) {
+        if (NetUtil.isInternet()) return
         Client.login()
     }
 

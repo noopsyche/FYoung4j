@@ -2,10 +2,7 @@ package love.sola.fyoung.gui.config;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -29,15 +26,19 @@ import java.util.ResourceBundle;
  */
 public class EditConfigController implements Initializable {
 
-	private ResourceBundle bundle;
+	protected ResourceBundle bundle;
 	@Getter
-	private Stage stage;
+	protected Stage stage;
 
 	public BorderPane root;
 	public Label title;
+	public Button close;
+	public Button save;
+
 	public TextField account;
 	public PasswordField password;
 	public CheckBox heartBeatPacket;
+	public CheckBox autoLogin;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -57,6 +58,7 @@ public class EditConfigController implements Initializable {
 		account.setText(Client.config_raw.username);
 		password.setText(Client.config_raw.password);
 		heartBeatPacket.setSelected(Client.config_raw.heartbeatPacket);
+		autoLogin.setSelected(Client.config.autoLogin);
 		stage.close();
 	}
 
@@ -84,4 +86,5 @@ public class EditConfigController implements Initializable {
 		root.getScene().getWindow().setX(evt.getScreenX() - xOffset);
 		root.getScene().getWindow().setY(evt.getScreenY() - yOffset);
 	}
+
 }

@@ -34,8 +34,7 @@ class PromptController : Initializable {
     var stage: Stage? = null
         private set
 
-    lateinit var latch: SolaLatch<String>
-        private set
+    internal lateinit var latch: SolaLatch<String>
     @FXML var root: VBox? = null
     @FXML var tip: Label? = null
     @FXML var input: TextField? = null
@@ -45,7 +44,7 @@ class PromptController : Initializable {
         bundle = resources
     }
 
-    fun setup(stage: Stage, tip: String, placeHolder: String, latch: SolaLatch<String>) {
+    internal fun setup(stage: Stage, tip: String, placeHolder: String, latch: SolaLatch<String>) {
         this.latch = latch
         this.stage = stage
         stage.initStyle(StageStyle.TRANSPARENT)
@@ -78,7 +77,7 @@ interface PromptInputHandler {
     fun requestInput(tip: String, placeHolder: String): String?
 }
 
-data class SolaLatch<T>(val latch: CountDownLatch, var value: T? = null)
+internal data class SolaLatch<T>(val latch: CountDownLatch, var value: T? = null)
 
 object GUIPromptInputHandler {
 

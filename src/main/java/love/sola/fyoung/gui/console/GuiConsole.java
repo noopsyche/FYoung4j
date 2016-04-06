@@ -19,6 +19,7 @@ public class GuiConsole extends Thread {
 
 	private static boolean initialized = false;
 	PipedInputStream in;
+	PrintStream sysOut;
 	TextArea guiConsole;
 
 	public GuiConsole(TextArea guiConsole) throws IOException {
@@ -28,6 +29,7 @@ public class GuiConsole extends Thread {
 			initialized = true;
 		}
 		this.guiConsole = guiConsole;
+		sysOut = System.out;
 		PipedOutputStream pout = new PipedOutputStream();
 		in = new PipedInputStream(pout);
 		System.setOut(new PrintStream(pout));
@@ -40,6 +42,7 @@ public class GuiConsole extends Thread {
 		Scanner cin = new Scanner(in);
 		while (cin.hasNext()) {
 			String line = cin.nextLine();
+			sysOut.println(line);
 			Platform.runLater(() -> {
 				guiConsole.appendText(line);
 				guiConsole.appendText("\n");
