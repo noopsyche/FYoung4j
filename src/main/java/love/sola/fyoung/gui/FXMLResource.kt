@@ -23,7 +23,7 @@ object FXMLResource {
                 continue
             }
             (memberProperty as KMutableProperty1<FXMLResource, URL>)
-                    .set(this, SystemTrayLauncher::class.java.getResource("/assets/fxml/" + memberProperty.name + ".fxml"))
+                    .set(this, SystemTrayLauncher::class.java.getResource("/assets/fxml/${memberProperty.name}.fxml"))
         }
     }
 

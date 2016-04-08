@@ -45,12 +45,42 @@ public class TrayManager {
 
 	private static PopupMenu createPopup() {
 		PopupMenu popup = new PopupMenu();
-		// create menu item for the default action
-		MenuItem defaultItem = new MenuItem("Test \u4e2d\u6587");
-		defaultItem.setFont(DEFAULT_FONT);
-		popup.add(defaultItem);
+		popup.add(createItem("tray.login", "login"));
+		popup.add(createItem("tray.logout", "logout"));
+		popup.addSeparator();
+		popup.add(createItem("tray.console", "console"));
+		popup.add(createItem("tray.config", "config"));
+		popup.addSeparator();
+		popup.add(createItem("tray.quit", "quit"));
 		return popup;
 	}
 
+	private static MenuItem createItem(String label, String command) {
+		MenuItem item = new MenuItem(lang(label));
+		item.setActionCommand(command);
+		return item;
+	}
+
+	public static void errorMessage(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.ERROR);
+	}
+
+	public static void warningMessage(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.WARNING);
+	}
+
+	public static void infoMessage(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.INFO);
+	}
+
+	public static void message(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.NONE);
+	}
+
+	private static void displayMessage(String caption, String text, TrayIcon.MessageType type) {
+		if (icon != null) {
+			icon.displayMessage(caption, text, type);
+		}
+	}
 
 }
