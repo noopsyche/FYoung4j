@@ -1,6 +1,7 @@
 package love.sola.fyoung.gui.tray;
 
-import javax.imageio.ImageIO;
+import love.sola.fyoung.Client;
+
 import java.awt.*;
 import java.io.IOException;
 
@@ -14,8 +15,14 @@ import static love.sola.fyoung.config.Lang.lang;
  */
 public class TrayManager {
 
-	public static Font DEFAULT_FONT;
-	public static TrayIcon icon = null;
+	/* TODO:
+	    Change tray-icon when net state changed.
+	    Tray message as a GUI tip.
+	    Disable popup-menu item properly
+	  */
+
+	private static Font DEFAULT_FONT;
+	private static TrayIcon icon = null;
 
 	static {
 		DEFAULT_FONT = new Font(null, Font.PLAIN, Toolkit.getDefaultToolkit().getScreenResolution() / 96 * 12);
@@ -27,14 +34,13 @@ public class TrayManager {
 			// get the SystemTray instance
 			SystemTray tray = SystemTray.getSystemTray();
 			// load an image
-			Image image = ImageIO.read(ClassLoader.getSystemResourceAsStream("assets/icon/offline_16x16.png"));
 			// construct a TrayIcon
-			TrayIcon trayIcon = new TrayIcon(image, lang("tray.tooltip"), createPopup());
+			icon = new TrayIcon(IconResource.ICON_OFFLINE, lang("tray.tooltip"), createPopup());
 			// set the TrayIcon properties
-			trayIcon.setImageAutoSize(true);
+			icon.setImageAutoSize(true);
 			// add the tray image
 			try {
-				tray.add(trayIcon);
+				tray.add(icon);
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
@@ -52,11 +58,17 @@ public class TrayManager {
 		popup.add(createItem("tray.config", "config"));
 		popup.addSeparator();
 		popup.add(createItem("tray.quit", "quit"));
+		popup.addActionListener(e -> {
+			if (Client.input != null) {
+				Client.input.writeToInput(e.getActionCommand());
+			}
+		});
 		return popup;
 	}
 
 	private static MenuItem createItem(String label, String command) {
 		MenuItem item = new MenuItem(lang(label));
+		item.setFont(DEFAULT_FONT);
 		item.setActionCommand(command);
 		return item;
 	}
