@@ -18,6 +18,7 @@ class BasicCommand {
     fun quit(command: String, args: Array<String>) {
         if (Client.GUI_MODE) {
             Platform.exit()
+            System.exit(0)
         } else {
             System.exit(0)
         }

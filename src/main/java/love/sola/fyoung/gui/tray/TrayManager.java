@@ -1,6 +1,9 @@
 package love.sola.fyoung.gui.tray;
 
+import com.google.common.eventbus.Subscribe;
 import love.sola.fyoung.Client;
+import love.sola.fyoung.event.LoginStateChangedEvent;
+import love.sola.fyoung.event.NetStateChangedEvent;
 
 import java.awt.*;
 import java.io.IOException;
@@ -15,14 +18,8 @@ import static love.sola.fyoung.config.Lang.lang;
  */
 public class TrayManager {
 
-	/* TODO:
-	    Change tray-icon when net state changed.
-	    Tray message as a GUI tip.
-	    Disable popup-menu item properly
-	  */
-
 	private static Font DEFAULT_FONT;
-	private static TrayIcon icon = null;
+	private static TrayIcon trayIcon = null;
 
 	static {
 		DEFAULT_FONT = new Font(null, Font.PLAIN, Toolkit.getDefaultToolkit().getScreenResolution() / 96 * 12);
@@ -35,15 +32,16 @@ public class TrayManager {
 			SystemTray tray = SystemTray.getSystemTray();
 			// load an image
 			// construct a TrayIcon
-			icon = new TrayIcon(IconResource.ICON_OFFLINE, lang("tray.tooltip"), createPopup());
+			trayIcon = new TrayIcon(IconResource.ICON_OFFLINE, lang("tray.tooltip"), createPopup());
 			// set the TrayIcon properties
-			icon.setImageAutoSize(true);
+			trayIcon.setImageAutoSize(true);
 			// add the tray image
 			try {
-				tray.add(icon);
+				tray.add(trayIcon);
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
+			registerStateListener();
 		} else {
 			System.out.println("System tray is not supported.");
 		}
@@ -63,6 +61,7 @@ public class TrayManager {
 				Client.input.writeToInput(e.getActionCommand());
 			}
 		});
+		popup.getItem(1).setEnabled(false); //disable logout menu
 		return popup;
 	}
 
@@ -90,9 +89,41 @@ public class TrayManager {
 	}
 
 	private static void displayMessage(String caption, String text, TrayIcon.MessageType type) {
-		if (icon != null) {
-			icon.displayMessage(caption, text, type);
+		if (trayIcon != null) {
+			trayIcon.displayMessage(caption, text, type);
 		}
+	}
+
+	private static void registerStateListener() {
+		Client.EVENT_BUS.register(new Object() {
+			@Subscribe
+			public void onNetStateChange(NetStateChangedEvent evt) {
+				Image icon;
+				switch (evt.getNow()) {
+					case ONLINE:
+						icon = IconResource.ICON_ONLINE;
+						break;
+					case OFFLINE:
+						icon = IconResource.ICON_OFFLINE;
+						break;
+					default:
+						return;
+				}
+				trayIcon.setImage(icon);
+//				String key = evt.getNow().name().toLowerCase();
+//				trayIcon.displayMessage(
+//						lang("tray.state." + key + ".title"),
+//						lang("tray.state." + key + ".msg"),
+//						TrayIcon.MessageType.INFO);
+			}
+
+			@Subscribe
+			public void onLoginStateChange(LoginStateChangedEvent evt) {
+				trayIcon.getPopupMenu().getItem(0).setEnabled(!evt.isLoggedIn());
+				trayIcon.getPopupMenu().getItem(1).setEnabled(evt.isLoggedIn());
+			}
+
+		});
 	}
 
 }

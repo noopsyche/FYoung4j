@@ -30,6 +30,8 @@ public class Config implements Cloneable {
 	public boolean useJLine;
 	public boolean useSpecifiedDNS;
 	public String specifiedDNS;
+	public int reloginRetryInterval;
+	public int networkCheckInterval;
 
 	// -------------------------------------------- //
 	// KERNEL
