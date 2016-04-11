@@ -31,6 +31,7 @@ public class MainThread extends Thread {
 		}
 		if (NetUtil.isInternet()) {
 			Client.updateNetState(NetState.ONLINE);
+			System.out.println("Current Internet Detected. No login required.");
 		} else if (config.autoLogin) {
 			input.writeToInput("login");
 		}

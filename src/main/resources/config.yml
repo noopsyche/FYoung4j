@@ -20,5 +20,6 @@ networkCheckInterval: 60
 # KERNEL
 ##########################
 clientIP: null
-nasIP: null
+nasIP: '61.142.108.88'
 mac: null
+isWiFi: false

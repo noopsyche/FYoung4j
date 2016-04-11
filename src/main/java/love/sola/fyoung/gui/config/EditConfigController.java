@@ -41,6 +41,8 @@ public class EditConfigController implements Initializable {
 	public PasswordField password;
 	public CheckBox heartBeatPacket;
 	public CheckBox autoLogin;
+	public CheckBox isWiFi;
+	public CheckBox debugMode;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -65,6 +67,8 @@ public class EditConfigController implements Initializable {
 		password.setText(Client.config_raw.password);
 		heartBeatPacket.setSelected(Client.config_raw.heartbeatPacket);
 		autoLogin.setSelected(Client.config.autoLogin);
+		isWiFi.setSelected(Client.config.isWiFi);
+		debugMode.setSelected(Client.config.debugMode);
 	}
 
 	public void onClose(MouseEvent evt) {
@@ -76,6 +80,8 @@ public class EditConfigController implements Initializable {
 		Client.config_raw.password = password.getText();
 		Client.config_raw.heartbeatPacket = heartBeatPacket.isSelected();
 		Client.config_raw.autoLogin = autoLogin.isSelected();
+		Client.config_raw.isWiFi = isWiFi.isSelected();
+		Client.config_raw.debugMode = debugMode.isSelected();
 		try {
 			ConfigLoader.saveConfig(Client.config_raw);
 		} catch (IOException e) {

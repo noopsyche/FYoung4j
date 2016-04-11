@@ -100,17 +100,24 @@ public class Client {
 		}
 	}
 
-	public static void login() throws Exception {
+	public static String login() throws Exception {
 		System.out.println("Challenging token...");
 		String token = Challenge.post(Challenge.configure(config.username));
 		System.out.println("Success challenged token: " + token);
 		System.out.println("Logging in...");
-		System.out.println(Login.post(Login.configure(config.username, config.password, token)));
+		String rs = Login.post(Login.configure(config.username, config.password, token, config.isWiFi));
+		System.out.println(rs);
+		return rs;
+//		if (rs != null && rs.contains("Password Error")) { //WiFi mode
+//			System.out.println("Login failed.");
+//			System.out.println("Retry with " + (!config.isWiFi ? "non-" : "") + "WiFi mode");
+//			Login.post(Login.configure(config.username, config.password, token, !config.isWiFi));
+//		}
 	}
 
-	public static void logout() throws Exception {
+	public static String logout() throws Exception {
 		System.out.println("Logging out...");
-		System.out.println(Logout.post(Logout.configure()));
+		return Logout.post(Logout.configure());
 	}
 
 }

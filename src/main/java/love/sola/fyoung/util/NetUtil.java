@@ -134,7 +134,7 @@ public class NetUtil {
 		if (Client.config.specifiedDNS != null) {
 			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
 			System.setProperty("sun.net.spi.nameservice.nameservers", Client.config.specifiedDNS);
-			System.out.println();
+			System.out.println("Name server has been set to: " + Client.config.specifiedDNS);
 		}
 	}
 

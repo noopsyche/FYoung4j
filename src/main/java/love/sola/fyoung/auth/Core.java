@@ -24,7 +24,8 @@ import java.util.Map;
  */
 public class Core {
 
-	public static final String IS_WIFI = "1050"; //4060 double client
+	public static final String IS_WIFI = "4060";
+	public static final String NOT_WIFI = "1050";
 	public static final String KEY_NAS_IP = "nasip";
 	public static final String KEY_CLIENT_IP = "clientip";
 	public static final String KEY_MAC = "mac";

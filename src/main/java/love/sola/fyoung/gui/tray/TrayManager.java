@@ -8,7 +8,6 @@ import love.sola.fyoung.event.NetStateChangedEvent;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 import static love.sola.fyoung.config.Lang.lang;
 
@@ -27,7 +26,7 @@ public class TrayManager {
 		DEFAULT_FONT = new Font(null, Font.PLAIN, Toolkit.getDefaultToolkit().getScreenResolution() / 96 * 12);
 	}
 
-	public static void startTray() throws IOException {
+	public static void startTray() {
 		if (SystemTray.isSupported()) {
 			System.out.println("Registering system tray...");
 			// get the SystemTray instance

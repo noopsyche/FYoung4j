@@ -28,18 +28,22 @@ class LoginCommand {
             TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.login.logout_failed"))
         } else {
             try {
-                Client.login()
+                val rs = Client.login()
+                if (NetUtil.isInternet()) {
+                    println("Login success.")
+                    TrayManager.infoMessage(lang("tray.success.login"), lang("tray.success.login.msg"))
+                    Client.setLoggedIn(true)
+                    Client.updateNetState(NetState.ONLINE)
+                } else {
+                    println("Login failed.")
+                    if (rs != null) {
+                        TrayManager.errorMessage(lang("tray.error.login"), format("tray.error.result", rs))
+                    } else {
+                        TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.unknown"))
+                    }
+                }
             } catch(e: Exception) {
                 OutputFormatter.logTrace("An error occurred while logging in.", e)
-            }
-            if (NetUtil.isInternet()) {
-                println("Login success.")
-                TrayManager.infoMessage(lang("tray.success.login"), lang("tray.success.login.msg"))
-                Client.setLoggedIn(true)
-                Client.updateNetState(NetState.ONLINE)
-            } else {
-                println("Login failed.")
-                //                TrayManager.errorMessage("tray.error.login", "tray.error.unknown")
                 TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.exception"))
             }
         }
@@ -75,6 +79,12 @@ class LoginCommand {
         var tryLogout = true
         while (NetUtil.isInternet()) {
             println("Internet Detected")
+
+            if (Client.config.nasIP == null) {
+                println("NAS IP not configured, manually logout is not available.")
+                return
+            }
+
             if (Client.config.clientIP != null && tryLogout) {
                 println("Trying to logout..")
                 Client.logout()

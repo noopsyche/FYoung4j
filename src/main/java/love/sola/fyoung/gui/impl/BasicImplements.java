@@ -8,6 +8,7 @@ import love.sola.fyoung.config.Lang;
 import love.sola.fyoung.gui.FXMLResource;
 import love.sola.fyoung.gui.config.FirstConfigController;
 import love.sola.fyoung.gui.prompt.GUIPromptInputHandler;
+import love.sola.fyoung.gui.tray.TrayManager;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -54,6 +55,7 @@ public class BasicImplements {
 
 	private static void applicationInitiate() {
 		Platform.runLater(() -> logViewStage.show());
+		TrayManager.startTray();
 	}
 
 }

@@ -25,6 +25,8 @@
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="%gui.config.account" />
@@ -35,6 +37,10 @@
             <CheckBox fx:id="heartBeatPacket" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="%gui.config.autoLogin" GridPane.rowIndex="3" />
             <CheckBox fx:id="autoLogin" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label layoutX="54.0" layoutY="97.0" text="%gui.config.isWiFi" GridPane.rowIndex="4" />
+            <Label layoutX="43.0" layoutY="120.0" text="%gui.config.debugMode" GridPane.rowIndex="5" />
+            <CheckBox fx:id="isWiFi" layoutX="193.0" layoutY="96.0" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <CheckBox fx:id="debugMode" layoutX="193.0" layoutY="96.0" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
          <padding>
             <Insets left="10.0" right="10.0" />

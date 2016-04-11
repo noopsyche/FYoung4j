@@ -39,6 +39,7 @@ public class Config implements Cloneable {
 	public String clientIP;
 	public String nasIP;
 	public String mac;
+	public boolean isWiFi;
 
 	@Override
 	public final Config clone() {
