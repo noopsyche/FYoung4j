@@ -1,7 +1,9 @@
 package love.sola.fyoung.task;
 
 import love.sola.fyoung.Client;
+import love.sola.fyoung.NetState;
 import love.sola.fyoung.log.OutputFormatter;
+import love.sola.fyoung.util.NetUtil;
 
 import java.io.IOException;
 
@@ -27,19 +29,20 @@ public class MainThread extends Thread {
 		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		if (config.autoLogin) {
+		if (NetUtil.isInternet()) {
+			Client.updateNetState(NetState.ONLINE);
+		} else if (config.autoLogin) {
 			input.writeToInput("login");
 		}
-		command:
-		while (true) {
-			try {
+		try {
+			while (true) {
 				String line;
 				while ((line = input.readLine()) != null) {
 					commandDispatcher.dispatch(line);
 				}
-			} catch (IOException e) {
-				OutputFormatter.logTrace("Error occurred while reading command via jline.", e);
 			}
+		} catch (IOException e) {
+			OutputFormatter.logTrace("Error occurred while reading command.", e);
 		}
 	}
 

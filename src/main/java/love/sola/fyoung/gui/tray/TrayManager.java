@@ -1,7 +1,13 @@
 package love.sola.fyoung.gui.tray;
 
-import javax.imageio.ImageIO;
+import com.google.common.eventbus.Subscribe;
+import love.sola.fyoung.Client;
+import love.sola.fyoung.event.LoginStateChangedEvent;
+import love.sola.fyoung.event.NetStateChangedEvent;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import static love.sola.fyoung.config.Lang.lang;
@@ -14,8 +20,8 @@ import static love.sola.fyoung.config.Lang.lang;
  */
 public class TrayManager {
 
-	public static Font DEFAULT_FONT;
-	public static TrayIcon icon = null;
+	private static Font DEFAULT_FONT;
+	private static TrayIcon trayIcon = null;
 
 	static {
 		DEFAULT_FONT = new Font(null, Font.PLAIN, Toolkit.getDefaultToolkit().getScreenResolution() / 96 * 12);
@@ -27,9 +33,8 @@ public class TrayManager {
 			// get the SystemTray instance
 			SystemTray tray = SystemTray.getSystemTray();
 			// load an image
-			Image image = ImageIO.read(ClassLoader.getSystemResourceAsStream("assets/icon/offline_16x16.png"));
 			// construct a TrayIcon
-			TrayIcon trayIcon = new TrayIcon(image, lang("tray.tooltip"), createPopup());
+			trayIcon = new TrayIcon(IconResource.ICON_OFFLINE, lang("tray.tooltip"), createPopup());
 			// set the TrayIcon properties
 			trayIcon.setImageAutoSize(true);
 			// add the tray image
@@ -38,6 +43,15 @@ public class TrayManager {
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
+			registerStateListener();
+			trayIcon.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() >= 2 && Client.input != null) {
+						Client.input.writeToInput("console");
+					}
+				}
+			});
 		} else {
 			System.out.println("System tray is not supported.");
 		}
@@ -45,12 +59,81 @@ public class TrayManager {
 
 	private static PopupMenu createPopup() {
 		PopupMenu popup = new PopupMenu();
-		// create menu item for the default action
-		MenuItem defaultItem = new MenuItem("Test \u4e2d\u6587");
-		defaultItem.setFont(DEFAULT_FONT);
-		popup.add(defaultItem);
+		popup.add(createItem("tray.login", "login"));
+		popup.add(createItem("tray.logout", "logout"));
+		popup.addSeparator();
+		popup.add(createItem("tray.console", "console"));
+		popup.add(createItem("tray.config", "config"));
+		popup.addSeparator();
+		popup.add(createItem("tray.quit", "quit"));
+		popup.addActionListener(e -> {
+			if (Client.input != null) {
+				Client.input.writeToInput(e.getActionCommand());
+			}
+		});
+		popup.getItem(1).setEnabled(false); //disable logout menu
 		return popup;
 	}
 
+	private static MenuItem createItem(String label, String command) {
+		MenuItem item = new MenuItem(lang(label));
+		item.setFont(DEFAULT_FONT);
+		item.setActionCommand(command);
+		return item;
+	}
+
+	public static void errorMessage(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.ERROR);
+	}
+
+	public static void warningMessage(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.WARNING);
+	}
+
+	public static void infoMessage(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.INFO);
+	}
+
+	public static void message(String caption, String text) {
+		displayMessage(caption, text, TrayIcon.MessageType.NONE);
+	}
+
+	private static void displayMessage(String caption, String text, TrayIcon.MessageType type) {
+		if (trayIcon != null) {
+			trayIcon.displayMessage(caption, text, type);
+		}
+	}
+
+	private static void registerStateListener() {
+		Client.EVENT_BUS.register(new Object() {
+			@Subscribe
+			public void onNetStateChange(NetStateChangedEvent evt) {
+				Image icon;
+				switch (evt.getNow()) {
+					case ONLINE:
+						icon = IconResource.ICON_ONLINE;
+						break;
+					case OFFLINE:
+						icon = IconResource.ICON_OFFLINE;
+						break;
+					default:
+						return;
+				}
+				trayIcon.setImage(icon);
+//				String key = evt.getNow().name().toLowerCase();
+//				trayIcon.displayMessage(
+//						lang("tray.state." + key + ".title"),
+//						lang("tray.state." + key + ".msg"),
+//						TrayIcon.MessageType.INFO);
+			}
+
+			@Subscribe
+			public void onLoginStateChange(LoginStateChangedEvent evt) {
+				trayIcon.getPopupMenu().getItem(0).setEnabled(!evt.isLoggedIn());
+				trayIcon.getPopupMenu().getItem(1).setEnabled(evt.isLoggedIn());
+			}
+
+		});
+	}
 
 }

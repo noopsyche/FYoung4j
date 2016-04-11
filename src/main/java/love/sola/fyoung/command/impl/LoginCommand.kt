@@ -1,10 +1,15 @@
 package love.sola.fyoung.command.impl
 
 import love.sola.fyoung.Client
+import love.sola.fyoung.NetState
 import love.sola.fyoung.command.Command
 import love.sola.fyoung.config.Config
+import love.sola.fyoung.config.Lang.format
 import love.sola.fyoung.config.Lang.lang
+import love.sola.fyoung.gui.tray.TrayManager
+import love.sola.fyoung.log.OutputFormatter
 import love.sola.fyoung.util.NetUtil
+import kotlin.concurrent.timerTask
 
 /**
  * ***********************************************
@@ -20,8 +25,23 @@ class LoginCommand {
         logout(command, args)
         if (NetUtil.isInternet()) {
             println("Logout failed.")
+            TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.login.logout_failed"))
         } else {
-            Client.login()
+            try {
+                Client.login()
+            } catch(e: Exception) {
+                OutputFormatter.logTrace("An error occurred while logging in.", e)
+            }
+            if (NetUtil.isInternet()) {
+                println("Login success.")
+                TrayManager.infoMessage(lang("tray.success.login"), lang("tray.success.login.msg"))
+                Client.setLoggedIn(true)
+                Client.updateNetState(NetState.ONLINE)
+            } else {
+                println("Login failed.")
+                //                TrayManager.errorMessage("tray.error.login", "tray.error.unknown")
+                TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.exception"))
+            }
         }
     }
 
@@ -29,7 +49,24 @@ class LoginCommand {
     @Throws(Exception::class)
     fun relogin(command: String, args: Array<String>) {
         if (NetUtil.isInternet()) return
-        Client.login()
+        try {
+            Client.login()
+        } catch(e: Exception) {
+            OutputFormatter.logTrace("An error occurred while re-logging in.", e)
+        }
+        if (NetUtil.isInternet()) {
+            println("Re-login success")
+            if (args.size > 0 && args[0].equals("retry", true)) {
+                TrayManager.errorMessage(lang("tray.success.relogin"), format("tray.success.login.msg"))
+            }
+            Client.updateNetState(NetState.ONLINE)
+        } else {
+            println("Re-login failed.")
+            TrayManager.errorMessage(lang("tray.error.relogin"), format("tray.error.exception.retry", Client.config.reloginRetryInterval))
+            Client.TIMER.schedule(timerTask {
+                if (Client.isLoggedIn()) Client.input.writeToInput("relogin retry")
+            }, Client.config.reloginRetryInterval * 1000L)
+        }
     }
 
     @Command("logout")
@@ -51,6 +88,7 @@ class LoginCommand {
                 line = Client.input.promptInput(lang("prompt.internet.detected"), "172.xxx.xxx.xxx")
                 if (line == null) continue
                 if (line.equals("q", true) || line.equals("quit", true)) {
+                    println("User interrupted.")
                     return
                 }
                 if (!line.matches(Config.IP_REGEX.toRegex())) {
@@ -63,6 +101,8 @@ class LoginCommand {
             }
             tryLogout = true
         }
+        Client.setLoggedIn(false)
+        Client.updateNetState(NetState.OFFLINE)
     }
 
 

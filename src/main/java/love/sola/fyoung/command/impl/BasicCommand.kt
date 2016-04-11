@@ -3,6 +3,7 @@ package love.sola.fyoung.command.impl
 import javafx.application.Platform
 import love.sola.fyoung.Client
 import love.sola.fyoung.command.Command
+import love.sola.fyoung.gui.SystemTrayLauncher
 import love.sola.fyoung.util.FormatUtil
 
 /**
@@ -17,6 +18,7 @@ class BasicCommand {
     fun quit(command: String, args: Array<String>) {
         if (Client.GUI_MODE) {
             Platform.exit()
+            System.exit(0)
         } else {
             System.exit(0)
         }
@@ -29,6 +31,24 @@ class BasicCommand {
         println("Free Mem: ${f(rt.freeMemory())}")
         println("Max Mem: ${f(rt.maxMemory())}")
         println("Total Mem: ${f(rt.totalMemory())}")
+    }
+
+    @Command("console")
+    fun console(command: String, args: Array<String>) {
+        if (Client.GUI_MODE) {
+            Platform.runLater {
+                SystemTrayLauncher.logViewStage.show()
+            }
+        }
+    }
+
+    @Command("config")
+    fun config(command: String, args: Array<String>) {
+        if (Client.GUI_MODE) {
+            Platform.runLater {
+                SystemTrayLauncher.configStage.show()
+            }
+        }
     }
 
 }

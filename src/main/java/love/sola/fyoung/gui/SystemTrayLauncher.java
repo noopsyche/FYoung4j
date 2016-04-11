@@ -9,6 +9,7 @@ import love.sola.fyoung.config.Lang;
 import love.sola.fyoung.gui.config.EditConfigController;
 import love.sola.fyoung.gui.console.LogViewController;
 import love.sola.fyoung.gui.impl.BasicImplements;
+import love.sola.fyoung.gui.tray.TrayManager;
 
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ public class SystemTrayLauncher extends Application {
 		Client.GUI_MODE = true;
 		BasicImplements.setupImplements();
 		Platform.setImplicitExit(false);
+		TrayManager.startTray();
 		launch(args);
 	}
 

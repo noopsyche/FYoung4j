@@ -3,6 +3,7 @@ package love.sola.fyoung.command;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import lombok.AllArgsConstructor;
+import love.sola.fyoung.log.OutputFormatter;
 import love.sola.fyoung.util.collection.CaseInsensitiveMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -63,7 +65,7 @@ public class CommandDispatcher {
 		try {
 			info.execute(command, args); //ignore return boolean value for now.
 		} catch (InvocationTargetException | IllegalAccessException e) {
-			e.printStackTrace();
+			OutputFormatter.logTrace("An error occurred while executing command: " + command + "  args:" + Arrays.toString(args), e);
 		}
 	}
 
