@@ -6,6 +6,8 @@ import love.sola.fyoung.event.LoginStateChangedEvent;
 import love.sola.fyoung.event.NetStateChangedEvent;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import static love.sola.fyoung.config.Lang.lang;
@@ -42,6 +44,14 @@ public class TrayManager {
 				e.printStackTrace();
 			}
 			registerStateListener();
+			trayIcon.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() >= 2 && Client.input != null) {
+						Client.input.writeToInput("console");
+					}
+				}
+			});
 		} else {
 			System.out.println("System tray is not supported.");
 		}
