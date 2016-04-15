@@ -25,26 +25,26 @@ class LoginCommand {
         logout(command, args)
         if (NetUtil.isInternet()) {
             println("Logout failed.")
-            TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.login.logout_failed"))
+            TrayManager.errorMessage(lang("tray.login.error.logout_failed"))
         } else {
             try {
                 val rs = Client.login()
                 if (NetUtil.isInternet()) {
                     println("Login success.")
-                    TrayManager.infoMessage(lang("tray.success.login"), lang("tray.success.login.msg"))
+                    TrayManager.infoMessage(lang("tray.login.success"))
                     Client.setLoggedIn(true)
                     Client.updateNetState(NetState.ONLINE)
                 } else {
                     println("Login failed.")
                     if (rs != null) {
-                        TrayManager.errorMessage(lang("tray.error.login"), format("tray.error.result", rs))
+                        TrayManager.errorMessage(format("tray.login.error.result", rs))
                     } else {
-                        TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.unknown"))
+                        TrayManager.errorMessage(lang("tray.login.error.unknown"))
                     }
                 }
             } catch(e: Exception) {
                 OutputFormatter.logTrace("An error occurred while logging in.", e)
-                TrayManager.errorMessage(lang("tray.error.login"), lang("tray.error.exception"))
+                TrayManager.errorMessage(lang("tray.login.error.exception"))
             }
         }
     }
@@ -61,12 +61,12 @@ class LoginCommand {
         if (NetUtil.isInternet()) {
             println("Re-login success")
             if (args.size > 0 && args[0].equals("retry", true)) {
-                TrayManager.errorMessage(lang("tray.success.relogin"), format("tray.success.login.msg"))
+                TrayManager.errorMessage(format("tray.relogin.success"))
             }
             Client.updateNetState(NetState.ONLINE)
         } else {
             println("Re-login failed.")
-            TrayManager.errorMessage(lang("tray.error.relogin"), format("tray.error.exception.retry", Client.config.reloginRetryInterval))
+            TrayManager.errorMessage(format("tray.relogin.error.exception.retry", Client.config.reloginRetryInterval))
             Client.TIMER.schedule(timerTask {
                 if (Client.isLoggedIn()) Client.input.writeToInput("relogin retry")
             }, Client.config.reloginRetryInterval * 1000L)

@@ -81,25 +81,25 @@ public class TrayManager {
 		return item;
 	}
 
-	public static void errorMessage(String caption, String text) {
-		displayMessage(caption, text, TrayIcon.MessageType.ERROR);
+	public static void errorMessage(String text) {
+		displayMessage(text, TrayIcon.MessageType.ERROR);
 	}
 
-	public static void warningMessage(String caption, String text) {
-		displayMessage(caption, text, TrayIcon.MessageType.WARNING);
+	public static void warningMessage(String text) {
+		displayMessage(text, TrayIcon.MessageType.WARNING);
 	}
 
-	public static void infoMessage(String caption, String text) {
-		displayMessage(caption, text, TrayIcon.MessageType.INFO);
+	public static void infoMessage(String text) {
+		displayMessage(text, TrayIcon.MessageType.INFO);
 	}
 
-	public static void message(String caption, String text) {
-		displayMessage(caption, text, TrayIcon.MessageType.NONE);
+	public static void message(String text) {
+		displayMessage(text, TrayIcon.MessageType.NONE);
 	}
 
-	private static void displayMessage(String caption, String text, TrayIcon.MessageType type) {
+	private static void displayMessage(String text, TrayIcon.MessageType type) {
 		if (trayIcon != null) {
-			trayIcon.displayMessage(caption, text, type);
+			trayIcon.displayMessage(lang("tray.caption"), text, type);
 		}
 	}
 
