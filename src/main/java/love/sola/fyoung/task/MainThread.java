@@ -2,12 +2,14 @@ package love.sola.fyoung.task;
 
 import love.sola.fyoung.Client;
 import love.sola.fyoung.NetState;
+import love.sola.fyoung.gui.tray.TrayManager;
 import love.sola.fyoung.log.OutputFormatter;
 import love.sola.fyoung.util.NetUtil;
 
 import java.io.IOException;
 
 import static love.sola.fyoung.Client.*;
+import static love.sola.fyoung.config.Lang.lang;
 
 /**
  * ***********************************************
@@ -32,6 +34,7 @@ public class MainThread extends Thread {
 		if (NetUtil.isInternet()) {
 			Client.updateNetState(NetState.ONLINE);
 			System.out.println("Current Internet Detected. No login required.");
+			TrayManager.infoMessage(lang("tray.autologin.alreadyInternet"));
 		} else if (config.autoLogin) {
 			input.writeToInput("login");
 		}
