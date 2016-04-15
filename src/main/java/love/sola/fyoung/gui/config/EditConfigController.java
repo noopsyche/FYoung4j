@@ -2,19 +2,18 @@ package love.sola.fyoung.gui.config;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import love.sola.fyoung.Client;
 import love.sola.fyoung.config.ConfigLoader;
+import love.sola.fyoung.gui.util.StageUtil;
 import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
@@ -29,15 +28,21 @@ import java.util.ResourceBundle;
  */
 public class EditConfigController implements Initializable {
 
-	private ResourceBundle bundle;
+	protected ResourceBundle bundle;
 	@Getter
-	private Stage stage;
+	protected Stage stage;
 
 	public BorderPane root;
 	public Label title;
+	public Button close;
+	public Button save;
+
 	public TextField account;
 	public PasswordField password;
 	public CheckBox heartBeatPacket;
+	public CheckBox autoLogin;
+	public CheckBox isWiFi;
+	public CheckBox debugMode;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -51,12 +56,22 @@ public class EditConfigController implements Initializable {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
+
+		stage.setOnShowing(this::onShow);
+
+		StageUtil.iconify(stage, title.getText());
 	}
 
-	public void onClose(MouseEvent evt) {
+	private void onShow(WindowEvent evt) {
 		account.setText(Client.config_raw.username);
 		password.setText(Client.config_raw.password);
 		heartBeatPacket.setSelected(Client.config_raw.heartbeatPacket);
+		autoLogin.setSelected(Client.config.autoLogin);
+		isWiFi.setSelected(Client.config.isWiFi);
+		debugMode.setSelected(Client.config.debugMode);
+	}
+
+	public void onClose(MouseEvent evt) {
 		stage.close();
 	}
 
@@ -64,6 +79,9 @@ public class EditConfigController implements Initializable {
 		Client.config_raw.username = account.getText();
 		Client.config_raw.password = password.getText();
 		Client.config_raw.heartbeatPacket = heartBeatPacket.isSelected();
+		Client.config_raw.autoLogin = autoLogin.isSelected();
+		Client.config_raw.isWiFi = isWiFi.isSelected();
+		Client.config_raw.debugMode = debugMode.isSelected();
 		try {
 			ConfigLoader.saveConfig(Client.config_raw);
 		} catch (IOException e) {
@@ -84,4 +102,5 @@ public class EditConfigController implements Initializable {
 		root.getScene().getWindow().setX(evt.getScreenX() - xOffset);
 		root.getScene().getWindow().setY(evt.getScreenY() - yOffset);
 	}
+
 }

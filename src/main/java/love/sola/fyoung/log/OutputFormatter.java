@@ -18,10 +18,10 @@ public class OutputFormatter { //TODO Rename
 
 	public static void logTrace(Throwable e) {
 		if (!Client.config.debugMode) return;
-		System.err.println("Cause by: " + e.getMessage());
+		System.err.println("Cause by: " + e.toString());
 		if (Client.config.useLog4j) {
 			System.err.println("See log files for more info.");
-			Log4jAdapter.getLogger().catching(Level.TRACE, e);
+			Log4jAdapter.getLogger().catching(Level.DEBUG, e);
 		} else {
 			e.printStackTrace();
 		}

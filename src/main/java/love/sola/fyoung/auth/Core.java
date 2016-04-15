@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +24,8 @@ import java.util.Map;
  */
 public class Core {
 
-	public static final String IS_WIFI = "1050"; //4060 double client
+	public static final String IS_WIFI = "4060";
+	public static final String NOT_WIFI = "1050";
 	public static final String KEY_NAS_IP = "nasip";
 	public static final String KEY_CLIENT_IP = "clientip";
 	public static final String KEY_MAC = "mac";
@@ -59,8 +61,8 @@ public class Core {
 	public static Map<String, String> post(String target, Map<String, String> conf) throws Exception {
 		URL url = new URL(target);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(500);
-		conn.setReadTimeout(500);
+		conn.setConnectTimeout(1000);
+		conn.setReadTimeout(1000);
 		conn.setRequestMethod("POST");
 		conn.addRequestProperty("User-Agent", "Mozilla");
 		conn.addRequestProperty("Content-Type", "application/json");
@@ -90,7 +92,7 @@ public class Core {
 		for (int i = 0; i < retry; i++) {
 			try {
 				return post(target, conf);
-			} catch (Exception e) {
+			} catch (SocketTimeoutException e) {
 				cause = e; //We only consider the final exception is the real one
 				OutputFormatter.logTrace("Retry " + (i + 1) + "failed.", e);
 			}

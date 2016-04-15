@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="love.sola.fyoung.gui.prompt.PromptController">
+   <children>
+      <Label fx:id="tip" text="Tip Message">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets right="60.0" />
+         </padding>
+      </Label>
+      <TextField fx:id="input" onKeyPressed="#onEnter" prefWidth="200.0" promptText="Command Go Here">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </TextField>
+      <HBox nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: transparent;">
+         <children>
+            <Button fx:id="confirm" defaultButton="true" mnemonicParsing="false" onKeyPressed="#onClick" onMouseClicked="#onClick" text="%gui.config.confirm" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+   </padding>
+</VBox>

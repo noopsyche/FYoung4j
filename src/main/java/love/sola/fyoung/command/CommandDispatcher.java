@@ -3,6 +3,7 @@ package love.sola.fyoung.command;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import lombok.AllArgsConstructor;
+import love.sola.fyoung.log.OutputFormatter;
 import love.sola.fyoung.util.collection.CaseInsensitiveMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -32,10 +34,10 @@ public class CommandDispatcher {
 			if (!Modifier.isPublic(clz.getModifiers())) continue; //skip non-public
 			Object instance = null;
 			for (Method method : clz.getDeclaredMethods()) {
-				if (!method.isAccessible()) continue; //skip non-public
+				if (!Modifier.isPublic(method.getModifiers())) continue; //skip non-public
 				if (!isExecutable(method)) continue; //skip not executable
 				if (instance == null) instance = clz.newInstance();
-				Command annotation = clz.getAnnotation(Command.class);
+				Command annotation = method.getAnnotation(Command.class);
 				registerExecutor(annotation.value(), instance, method);
 			}
 		}
@@ -63,13 +65,13 @@ public class CommandDispatcher {
 		try {
 			info.execute(command, args); //ignore return boolean value for now.
 		} catch (InvocationTargetException | IllegalAccessException e) {
-			e.printStackTrace();
+			OutputFormatter.logTrace("An error occurred while executing command: " + command + "  args:" + Arrays.toString(args), e);
 		}
 	}
 
 	private static boolean isExecutable(Method method) {
 		return method.isAnnotationPresent(Command.class)
-				&& method.getParameters().length >= 2
+				&& method.getParameters().length == 2
 				&& method.getParameters()[0].getType() == String.class
 				&& method.getParameters()[1].getType() == String[].class;
 	}

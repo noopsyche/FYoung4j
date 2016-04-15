@@ -1,7 +1,5 @@
 package love.sola.fyoung.auth;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import love.sola.fyoung.Client;
 import love.sola.fyoung.util.NetUtil;
 
@@ -18,7 +16,7 @@ public class Login {
 
 	public static final String URL = "http://enet.10000.gd.cn:10001/client/login";
 
-	public static Map<String, String> configure(String u, String p, String t) {
+	public static Map<String, String> configure(String u, String p, String t, boolean isWiFi) {
 		Map<String, String> map = new LinkedHashMap<>();
 		map.put(Core.KEY_USERNAME, u);
 		map.put(Core.KEY_PASSWORD, p);
@@ -27,7 +25,7 @@ public class Login {
 		map.put(Core.KEY_MAC, NetUtil.getMAC());
 		map.put(Core.KEY_TIMESTAMP, Long.toString(System.currentTimeMillis()));
 		map.put(Core.KEY_AUTHENTICATOR, Authenticator.getAuthenticator(t, map));
-		map.put(Core.KEY_IS_WIFI, Core.IS_WIFI);
+		map.put(Core.KEY_IS_WIFI, isWiFi ? Core.IS_WIFI : Core.NOT_WIFI);
 		return map;
 	}
 

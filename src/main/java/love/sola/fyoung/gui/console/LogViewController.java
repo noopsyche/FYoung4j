@@ -1,19 +1,23 @@
 package love.sola.fyoung.gui.console;
 
+import com.google.common.eventbus.Subscribe;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Getter;
+import love.sola.fyoung.Client;
+import love.sola.fyoung.event.LoginStateChangedEvent;
 import love.sola.fyoung.gui.SystemTrayLauncher;
 import love.sola.fyoung.gui.util.ResizeListener;
+import love.sola.fyoung.gui.util.StageUtil;
 import love.sola.fyoung.log.OutputFormatter;
 
 import java.io.IOException;
@@ -35,6 +39,7 @@ public class LogViewController implements Initializable {
 
 	public BorderPane root;
 	public Label tipLabel;
+	public Label statusLabel;
 	public Button clearBtn;
 	public TextArea guiConsole;
 	public Button editCfgBtn;
@@ -50,12 +55,7 @@ public class LogViewController implements Initializable {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(new Scene(root));
 		stage.getScene().setFill(Color.TRANSPARENT);
-		stage.getIcons().addAll(
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_16x16.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_24x24.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_32x32.png")),
-				new Image(getClass().getResourceAsStream("/assets/icon/icon_48x48.png"))
-		);
+		StageUtil.iconify(stage, bundle.getString("gui.logconsole.title"));
 		ResizeListener.addResizeListener(stage);
 		try {
 			console = new GuiConsole(guiConsole);
@@ -88,6 +88,27 @@ public class LogViewController implements Initializable {
 	public void onLayoutDrag(MouseEvent evt) {
 		root.getScene().getWindow().setX(evt.getScreenX() - xOffset);
 		root.getScene().getWindow().setY(evt.getScreenY() - yOffset);
+	}
+
+	private void registerListener() {
+		Client.EVENT_BUS.register(new Object() {
+
+			@Subscribe
+			public void onLoginStateChanged(LoginStateChangedEvent evt) {
+				if (evt.isLoggedIn()) {
+					Platform.runLater(() -> {
+						statusLabel.setText(bundle.getString("gui.logconsole.status.online"));
+						statusLabel.setTextFill(Color.GREEN);
+					});
+				} else {
+					Platform.runLater(() -> {
+						statusLabel.setText(bundle.getString("gui.logconsole.status.offline"));
+						statusLabel.setTextFill(Color.RED);
+					});
+				}
+			}
+
+		});
 	}
 
 }

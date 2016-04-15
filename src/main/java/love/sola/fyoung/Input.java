@@ -15,15 +15,15 @@ import java.util.Scanner;
 public class Input extends Thread {
 
 	private static boolean initialized = false;
-	public PipedInputStream pipeIn;
-	public PipedOutputStream pipeOut;
-	public InputStream sysIn;
-	public OutputStream sysOut;
-	public PrintStream writer;
-	public ConsoleReader jLineReader;
-	public Scanner sysInReader;
-	public BufferedReader pipeInReader;
-	public boolean useJLine;
+	private PipedInputStream pipeIn;
+	private PipedOutputStream pipeOut;
+	private InputStream sysIn;
+	private OutputStream sysOut;
+	private PrintStream writer;
+	private ConsoleReader jLineReader;
+	private Scanner sysInReader;
+	private BufferedReader pipeInReader;
+	private boolean useJLine;
 
 	public Input() throws IOException {
 		if (initialized) {
@@ -56,7 +56,16 @@ public class Input extends Thread {
 		}
 	}
 
-	public void writeLine(String line) {
+	public String promptInput(String tip, String placeHolder) throws IOException {
+		if (Client.GUI_MODE) {
+			return Client.inputRequester.requestInput(tip, placeHolder);
+		} else {
+			System.out.println(tip);
+			return readLine();
+		}
+	}
+
+	public void writeToInput(String line) {
 		writer.println(line);
 	}
 
