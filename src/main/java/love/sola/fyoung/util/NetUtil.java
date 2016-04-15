@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 public class NetUtil {
 
 	public static final String IP_PATTERN = "[1-9][0-9]{1,2}\\.([0-9]{1,3}\\.){2}[1-9][0-9]{0,2}";
+	private static final String os = System.getProperty("os.name").toLowerCase();
 
 	public static String getLocalIP() {
 		if (Client.config.clientIP != null) {
@@ -52,11 +53,13 @@ public class NetUtil {
 	}
 
 	private static String getMac0() {
+		//os x use en0 insteadof eth0
+		String prefix = os.contains("Mac OS X") ? "en" : "eth";
 		try {
 			Enumeration<NetworkInterface> it = NetworkInterface.getNetworkInterfaces();
 			while (it.hasMoreElements()) {
 				NetworkInterface iface = it.nextElement();
-				if (!iface.getName().startsWith("eth")) continue;
+				if (!iface.getName().startsWith(prefix)) continue;
 				byte[] b = iface.getHardwareAddress();
 				if (b == null) continue;
 				StringBuilder sb = new StringBuilder(18);
