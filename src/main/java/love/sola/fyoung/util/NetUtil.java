@@ -68,7 +68,7 @@ public class NetUtil {
 
 	private static String getMac0() {
 		//os x use en0 insteadof eth0
-		String prefix = os.contains("Mac OS X") ? "en" : "eth";
+		String prefix = os.contains("mac os x") ? "en" : "eth";
 		try {
 			Enumeration<NetworkInterface> it = NetworkInterface.getNetworkInterfaces();
 			while (it.hasMoreElements()) {

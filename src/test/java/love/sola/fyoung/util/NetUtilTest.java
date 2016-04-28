@@ -17,14 +17,23 @@
 
 package love.sola.fyoung.util;
 
+import love.sola.fyoung.Client;
+import love.sola.fyoung.config.Config;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
  * @author Sola {@literal <dev@sola.love>}
  */
 public class NetUtilTest {
+
+	@Test
+	public void getMAC() throws Exception {
+		Client.config = new Config();
+		assertNotNull(NetUtil.getMAC());
+	}
 
 	@Test
 	public void isInternet() throws Exception {
