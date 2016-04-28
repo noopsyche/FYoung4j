@@ -5,10 +5,7 @@ import lombok.Getter;
 import love.sola.fyoung.NetState;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/4/10.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 @AllArgsConstructor
 @Getter

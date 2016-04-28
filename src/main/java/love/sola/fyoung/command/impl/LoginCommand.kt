@@ -12,10 +12,7 @@ import love.sola.fyoung.util.NetUtil
 import kotlin.concurrent.timerTask
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/24.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola
  */
 class LoginCommand {
 

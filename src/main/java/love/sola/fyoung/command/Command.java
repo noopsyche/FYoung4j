@@ -6,10 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/20.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

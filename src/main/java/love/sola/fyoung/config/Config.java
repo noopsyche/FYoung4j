@@ -3,10 +3,7 @@ package love.sola.fyoung.config;
 import lombok.ToString;
 
 /**
- * ***********************************************
- * Created by Sola on 2014/8/20.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 @ToString(exclude = "password")
 public class Config implements Cloneable {

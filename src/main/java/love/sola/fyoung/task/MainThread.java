@@ -12,10 +12,7 @@ import static love.sola.fyoung.Client.*;
 import static love.sola.fyoung.config.Lang.lang;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/19.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class MainThread extends Thread {
 

@@ -10,10 +10,7 @@ import java.util.Scanner;
 import static love.sola.fyoung.config.Lang.lang;
 
 /**
- * ***********************************************
- * Created by Sola on 2015/12/25.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class GuiConsole extends Thread {
 

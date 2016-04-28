@@ -9,10 +9,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/21.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class UtilsTest {
 

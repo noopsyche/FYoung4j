@@ -13,10 +13,7 @@ import love.sola.fyoung.gui.impl.BasicImplements;
 import java.io.IOException;
 
 /**
- * ***********************************************
- * Created by Sola on 2014/8/20.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class SystemTrayLauncher extends Application {
 

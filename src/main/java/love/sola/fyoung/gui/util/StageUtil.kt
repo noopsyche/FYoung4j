@@ -4,10 +4,7 @@ import javafx.scene.image.Image
 import javafx.stage.Stage
 
 /**
- * ***********************************************
- * Created by Sola on 2016/4/6.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola
  */
 object StageUtil {
 

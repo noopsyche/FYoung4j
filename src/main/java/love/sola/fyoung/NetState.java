@@ -1,10 +1,7 @@
 package love.sola.fyoung;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/4/10.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public enum NetState {
 

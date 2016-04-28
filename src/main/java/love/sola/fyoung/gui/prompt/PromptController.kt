@@ -24,10 +24,7 @@ import java.util.*
 import java.util.concurrent.CountDownLatch
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/29.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola
  */
 class PromptController : Initializable {
 

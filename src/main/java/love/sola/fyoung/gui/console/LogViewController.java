@@ -25,10 +25,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * ***********************************************
- * Created by Sola on 2015/12/24.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class LogViewController implements Initializable {
 

@@ -17,10 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * ***********************************************
- * Created by Sola on 2014/8/20.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class Core {
 

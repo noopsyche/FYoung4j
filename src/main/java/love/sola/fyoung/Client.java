@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.util.Timer;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/1/17.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class Client {
 

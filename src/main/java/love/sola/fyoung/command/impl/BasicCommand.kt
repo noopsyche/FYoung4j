@@ -7,10 +7,7 @@ import love.sola.fyoung.gui.SystemTrayLauncher
 import love.sola.fyoung.util.FormatUtil
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/21.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola
  */
 class BasicCommand {
 

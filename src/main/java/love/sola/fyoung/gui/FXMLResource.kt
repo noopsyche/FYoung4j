@@ -6,10 +6,7 @@ import kotlin.reflect.declaredMemberProperties
 import kotlin.reflect.defaultType
 
 /**
- * ***********************************************
- * Created by Sola on 2016/4/2.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola
  */
 object FXMLResource {
 

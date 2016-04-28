@@ -16,10 +16,7 @@ import java.util.concurrent.CountDownLatch;
 import static love.sola.fyoung.gui.SystemTrayLauncher.logViewStage;
 
 /**
- * ***********************************************
- * Created by Sola on 2016/3/21.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class BasicImplements {
 

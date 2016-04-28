@@ -4,10 +4,7 @@ import java.awt.Image
 import javax.imageio.ImageIO
 
 /**
- * ***********************************************
- * Created by Sola on 2016/4/8.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola
  */
 object IconResource {
 

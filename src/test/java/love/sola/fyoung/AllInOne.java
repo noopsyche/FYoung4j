@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * ***********************************************
- * Created by Sola on 2015/12/29.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class AllInOne {
 

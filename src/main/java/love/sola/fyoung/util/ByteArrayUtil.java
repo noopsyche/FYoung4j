@@ -1,10 +1,7 @@
 package love.sola.fyoung.util;
 
 /**
- * ***********************************************
- * Created by Sola on 2014/6/16.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class ByteArrayUtil {
 

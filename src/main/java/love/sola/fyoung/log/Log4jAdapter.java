@@ -7,10 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.PrintStream;
 
 /**
- * ***********************************************
- * Created by Sola on 2014/8/20.
- * Don't modify this source without my agreement
- * ***********************************************
+ * @author Sola {@literal <dev@sola.love>}
  */
 public class Log4jAdapter {
 
