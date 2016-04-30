@@ -76,6 +76,7 @@ public class LogViewController implements Initializable {
 		} catch (IOException e) {
 			OutputFormatter.logTrace("GUI Console initializing failed.", e);
 		}
+		registerListener();
 	}
 
 	public void onClear(MouseEvent evt) {
