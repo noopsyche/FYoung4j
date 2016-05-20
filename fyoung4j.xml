@@ -2,7 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>H:\SolaWorkAPP\FYoung\target\FYoung-2.2.jar</jar>
+  <jar>H:\SolaWorkAPP\FYoung\target\FYoung4j-2.3.jar</jar>
   <outfile>M:\Desktop\FYoung.exe</outfile>
   <errTitle>FYoung4j</errTitle>
   <cmdLine></cmdLine>
